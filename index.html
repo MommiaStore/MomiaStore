@@ -16,23 +16,24 @@ min-height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
-padding:0 20px 40px 20px; /* SIN espacio arriba */
+padding:0 20px 40px 20px;
 color:white;
 }
 
-/* 🔥 MISMO TAMAÑO GRANDE */
+/* LOGO MISMO TAMAÑO, SIN ESPACIO */
 .logo{
-margin:0; /* quitamos margen */
+margin:0;
+padding:0;
 }
 
 .logo img{
-width:650px; /* mismo tamaño grande que te gustó */
+width:650px;
 max-width:100%;
 display:block;
-margin:0 auto -25px auto; /* pegamos al recuadro */
+margin:0 auto;
 }
 
-/* 🔥 SUBIMOS EL RECUADRO */
+/* RECUADRO SUBIDO AGRESIVO */
 .card{
 background:rgba(30,41,59,0.95);
 width:100%;
@@ -40,7 +41,9 @@ max-width:1100px;
 border-radius:25px;
 padding:45px;
 box-shadow:0 25px 60px rgba(0,0,0,0.6);
-margin-top:-15px; /* lo sube para eliminar hueco */
+
+/* 🔥 aquí está la magia */
+margin-top:-60px; /* lo pegamos fuerte */
 }
 
 .header{
@@ -110,11 +113,13 @@ background:#16a34a;
 }
 
 .hidden{display:none;}
-.total-rojo{color:#ef4444;font-weight:bold;}
 
 @media(max-width:768px){
 .logo img{
 width:480px;
+}
+.card{
+margin-top:-40px;
 }
 }
 </style>
@@ -134,16 +139,15 @@ width:480px;
 </div>
 
 <label>Selecciona tu país:</label>
-<select id="pais" required>
+<select required>
 <option value="" disabled selected hidden>Escoja una opción</option>
-<option value="ecuador">Ecuador</option>
-<option value="venezuela">Venezuela</option>
-<option value="colombia">Colombia</option>
-<option value="mexico">México</option>
-<option value="peru">Perú</option>
-<option value="argentina">Argentina</option>
-<option value="chile">Chile</option>
-<option value="espana">España</option>
+<option>Ecuador</option>
+<option>Venezuela</option>
+<option>Colombia</option>
+<option>México</option>
+<option>Perú</option>
+<option>Argentina</option>
+<option>Chile</option>
 </select>
 
 <label>Nombre:</label>
@@ -163,20 +167,15 @@ width:480px;
 <input type="email" placeholder="Correo electrónico">
 
 <label>Selecciona tu método de pago:</label>
-<select id="metodo" required>
+<select required>
 <option value="" disabled selected hidden>Forma de pago</option>
 </select>
-
-<div id="comprobanteSection" class="hidden">
-<label>Comprobante de pago:</label>
-<input type="file">
-</div>
 
 <div class="resumen">
 <h3>Resumen del pedido</h3>
 <div>Producto seleccionado: <strong>Black Myth: Wukong</strong></div>
-<div>Precio base: <span>35.00 USD</span></div>
-<div>Total a pagar: <span id="precioTotal">--</span></div>
+<div>Precio base: 35.00 USD</div>
+<div>Total a pagar: --</div>
 </div>
 
 <button>Procesar Envío</button>
