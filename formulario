@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Recibo de envío | Momia Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    input[type="file"] {
+      background: white;
+      color: black;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #2563eb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .success {
+      text-align: center;
+      margin-top: 15px;
+      color: #22c55e;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="logo">MOMIA STORE</div>
+
+  <h2>Recibo de envío</h2>
+
+  <form>
+    <label>Nombre:</label>
+    <input type="text" required>
+
+    <label>Correo electrónico:</label>
+    <input type="email" required>
+
+    <label>WhatsApp:</label>
+    <input type="text" required>
+
+    <label>Selecciona tu método de pago:</label>
+    <select required>
+      <option value="">Elige una opción</option>
+      <option>Transferencia bancaria</option>
+      <option>PayPal</option>
+    </select>
+
+    <label>Comprobante de pago:</label>
+    <input type="file" required>
+
+    <button type="submit">Procesar Envío</button>
+
+    <div class="success">Enviado correctamente.</div>
+  </form>
+</div>
+
+</body>
+</html>
