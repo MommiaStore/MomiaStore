@@ -16,13 +16,21 @@ min-height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
-padding:30px 20px;
+padding:10px 20px 40px 20px; /* reducido arriba */
 color:white;
 }
 
+/* LOGO GRANDE Y MÁS ABAJO */
+.logo{
+margin-top:10px;
+margin-bottom:-10px; /* lo pega al recuadro */
+}
+
 .logo img{
-width:420px;
-margin-bottom:15px;
+width:520px; /* MÁS GRANDE */
+max-width:95%;
+display:block;
+margin:0 auto;
 }
 
 .card{
@@ -102,6 +110,12 @@ background:#16a34a;
 
 .hidden{display:none;}
 .total-rojo{color:#ef4444;font-weight:bold;}
+
+@media(max-width:768px){
+.logo img{
+width:380px;
+}
+}
 </style>
 </head>
 
@@ -169,7 +183,6 @@ background:#16a34a;
 </div>
 
 <script>
-
 const pais = document.getElementById("pais");
 const metodo = document.getElementById("metodo");
 const precioTotal = document.getElementById("precioTotal");
@@ -193,12 +206,10 @@ metodo.innerHTML+=`
 <option value="paypal">PayPal</option>
 `;
 }
-
 actualizar();
 }
 
 function actualizar(){
-
 if(!pais.value || !metodo.value){
 precioTotal.textContent="--";
 comprobanteSection.classList.add("hidden");
@@ -219,7 +230,6 @@ precioTotal.textContent = total.toFixed(2)+' USD';
 
 pais.addEventListener("change",cargarMetodos);
 metodo.addEventListener("change",actualizar);
-
 </script>
 
 </body>
