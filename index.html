@@ -7,90 +7,82 @@
 
 <style>
 
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:60px 20px;
+color:white;
 }
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+.main-logo img{
+width:450px;
+max-width:95%;
+margin-bottom:40px;
 }
 
-.container {
-    background: rgba(30, 41, 59, 0.95);
-    backdrop-filter: blur(15px);
-    padding: 50px 40px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 520px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+.container{
+background:rgba(30,41,59,0.95);
+padding:50px;
+border-radius:22px;
+width:100%;
+max-width:850px;
+box-shadow:0 30px 60px rgba(0,0,0,0.6);
 }
 
-.logo {
-    text-align: center;
-    margin-bottom: 25px;
+h2{
+margin-bottom:10px;
 }
 
-.logo img {
-    width: 320px;
-    display: block;
-    margin: 0 auto;
+.sub-info{
+color:#94a3b8;
+margin-bottom:30px;
 }
 
-h2 {
-    text-align: center;
-    color: #f1f5f9;
-    font-weight: 500;
-    margin-bottom: 35px;
-    letter-spacing: 1px;
+.section-title{
+margin-top:30px;
+margin-bottom:10px;
+font-weight:500;
 }
 
-label {
-    color: #cbd5e1;
-    font-size: 14px;
-    margin-bottom: 6px;
-    display: block;
+input,select{
+width:100%;
+padding:14px;
+border-radius:10px;
+border:1px solid #334155;
+background:#0f172a;
+color:white;
+margin-bottom:20px;
 }
 
-input, select {
-    width: 100%;
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #334155;
-    background-color: #0f172a;
-    color: white;
-    margin-bottom: 22px;
-    font-size: 14px;
-    transition: 0.3s ease;
+button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#2563eb,#3b82f6);
+color:white;
+font-size:16px;
+cursor:pointer;
+margin-top:20px;
 }
 
-input:focus, select:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
+.price-box{
+background:#0f172a;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+border:1px solid #334155;
 }
 
-button {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #2563eb, #3b82f6);
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59,130,246,0.4);
+.hidden{
+display:none;
 }
 
 </style>
@@ -98,41 +90,114 @@ button:hover {
 
 <body>
 
+<div class="main-logo">
+<img src="logo.png" alt="Momia Store">
+</div>
+
 <div class="container">
 
-    <div class="logo">
-        <img src="logo.png" alt="Momia Store">
-    </div>
+<h2>Recibo de envío</h2>
+<div class="sub-info">Verifica los detalles antes de enviar</div>
 
-    <h2>Recibo de envío</h2>
+<div class="section-title">Productos seleccionados</div>
 
-    <form>
+<select id="categoria">
+<option value="">Selecciona categoría</option>
+<option value="PS5">PS5</option>
+<option value="PS4">PS4</option>
+</select>
 
-        <label>Nombre:</label>
-        <input type="text" required>
+<div class="section-title">Selecciona tu país</div>
 
-        <label>Correo electrónico:</label>
-        <input type="email" required>
+<select id="pais">
+<option value="">Selecciona tu país</option>
+<option value="ecuador">Ecuador</option>
+<option value="venezuela">Venezuela</option>
+<option value="colombia">Colombia</option>
+<option value="mexico">México</option>
+<option value="peru">Perú</option>
+<option value="argentina">Argentina</option>
+<option value="chile">Chile</option>
+<option value="espana">España</option>
+</select>
 
-        <label>WhatsApp:</label>
-        <input type="text" required>
+<div class="price-box" id="precioBox">
+Precio base: <span id="precioTexto">--</span>
+</div>
 
-        <label>Selecciona tu método de pago:</label>
-        <select required>
-            <option value="">Elige una opción</option>
-            <option>Transferencia bancaria</option>
-            <option>Depósito</option>
-            <option>Pago móvil</option>
-        </select>
+<div class="section-title">Método de pago</div>
 
-        <label>Comprobante de pago:</label>
-        <input type="file" required>
+<select id="metodo">
+<option value="">Selecciona método</option>
+<option value="transferencia">Transferencia</option>
+<option value="binance">Binance</option>
+</select>
 
-        <button type="submit">Procesar envío</button>
+<div class="price-box">
+Total ajustado: <span id="totalTexto">--</span>
+</div>
 
-    </form>
+<div id="comprobanteSection" class="hidden">
+<div class="section-title">Adjuntar comprobante</div>
+<input type="file">
+</div>
+
+<button>Procesar envío</button>
 
 </div>
+
+<script>
+
+const pais = document.getElementById("pais");
+const metodo = document.getElementById("metodo");
+const precioTexto = document.getElementById("precioTexto");
+const totalTexto = document.getElementById("totalTexto");
+const comprobanteSection = document.getElementById("comprobanteSection");
+
+let precios = {
+ecuador: {base:35, moneda:"$"},
+venezuela: {base:21000, moneda:"Bs"},
+colombia: {base:140000, moneda:"COP"},
+mexico: {base:650, moneda:"MXN"},
+peru: {base:130, moneda:"S/"},
+argentina: {base:30000, moneda:"ARS"},
+chile: {base:27000, moneda:"CLP"},
+espana: {base:29.75, moneda:"€"}
+};
+
+function actualizarPrecio(){
+
+let paisSeleccionado = pais.value;
+let metodoSeleccionado = metodo.value;
+
+if(!paisSeleccionado){
+precioTexto.textContent="--";
+totalTexto.textContent="--";
+comprobanteSection.classList.add("hidden");
+return;
+}
+
+comprobanteSection.classList.remove("hidden");
+
+let base = precios[paisSeleccionado].base;
+let moneda = precios[paisSeleccionado].moneda;
+
+precioTexto.textContent = moneda + " " + base;
+
+let total = base;
+
+if(metodoSeleccionado === "binance"){
+total = base * 1.05;
+}
+
+totalTexto.textContent = moneda + " " + total.toFixed(2);
+
+}
+
+pais.addEventListener("change", actualizarPrecio);
+metodo.addEventListener("change", actualizarPrecio);
+
+</script>
 
 </body>
 </html>
