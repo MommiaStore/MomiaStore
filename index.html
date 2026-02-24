@@ -16,23 +16,25 @@ min-height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
-padding:0 20px 40px 20px; /* quitamos espacio superior */
+padding:0 20px 40px 20px; /* sin espacio arriba */
 color:white;
 }
 
-/* LOGO MUCHO MÁS GRANDE Y MÁS PEGADO */
+/* LOGO PEGADO TOTAL */
 .logo{
-margin-top:40px; /* baja el logo */
-margin-bottom:-40px; /* lo pega al recuadro */
+margin:0; /* quitamos márgenes */
+padding:0;
+transform:translateY(25px); /* lo bajamos visualmente */
 }
 
 .logo img{
-width:650px; /* MUCHO MÁS GRANDE */
+width:650px;
 max-width:100%;
 display:block;
 margin:0 auto;
 }
 
+/* RECUADRO */
 .card{
 background:rgba(30,41,59,0.95);
 width:100%;
@@ -40,7 +42,7 @@ max-width:1100px;
 border-radius:25px;
 padding:45px;
 box-shadow:0 25px 60px rgba(0,0,0,0.6);
-margin-top:0;
+margin-top:-10px; /* lo subimos para pegarlo */
 }
 
 .header{
@@ -114,7 +116,7 @@ background:#16a34a;
 
 @media(max-width:768px){
 .logo img{
-width:480px; /* sigue siendo grande en móvil */
+width:480px;
 }
 }
 </style>
@@ -175,7 +177,7 @@ width:480px; /* sigue siendo grande en móvil */
 <div class="resumen">
 <h3>Resumen del pedido</h3>
 <div>Producto seleccionado: <strong>Black Myth: Wukong</strong></div>
-<div>Precio base: <span id="precioBase">35.00 USD</span></div>
+<div>Precio base: <span>35.00 USD</span></div>
 <div>Total a pagar: <span id="precioTotal">--</span></div>
 </div>
 
