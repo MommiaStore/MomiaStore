@@ -6,7 +6,6 @@
 <title>Recibo de envío | Momia Store</title>
 
 <style>
-
 *{box-sizing:border-box;}
 
 body{
@@ -21,7 +20,6 @@ padding:30px 20px;
 color:white;
 }
 
-/* LOGO MÁS GRANDE Y MÁS PEGADO */
 .logo img{
 width:420px;
 margin-bottom:15px;
@@ -43,9 +41,7 @@ align-items:center;
 margin-bottom:25px;
 }
 
-.header h2{
-margin:0;
-}
+.header h2{margin:0;}
 
 .limpiar{
 color:#ef4444;
@@ -70,6 +66,10 @@ color:white;
 font-size:14px;
 }
 
+select:invalid{
+color:#94a3b8;
+}
+
 input:focus,select:focus{
 outline:none;
 border-color:#3b82f6;
@@ -77,19 +77,6 @@ border-color:#3b82f6;
 
 .resumen{
 margin-top:35px;
-padding:20px;
-background:#0f172a;
-border-radius:15px;
-border:1px solid #334155;
-}
-
-.resumen h3{
-margin-top:0;
-margin-bottom:15px;
-}
-
-.detalles-metodo{
-margin-top:20px;
 padding:20px;
 background:#0f172a;
 border-radius:15px;
@@ -114,12 +101,7 @@ background:#16a34a;
 }
 
 .hidden{display:none;}
-
-.total-rojo{
-color:#ef4444;
-font-weight:bold;
-}
-
+.total-rojo{color:#ef4444;font-weight:bold;}
 </style>
 </head>
 
@@ -138,7 +120,7 @@ font-weight:bold;
 
 <label>Selecciona tu país:</label>
 <select id="pais" required>
-<option value=""></option>
+<option value="" disabled selected hidden>Escoja una opción</option>
 <option value="ecuador">Ecuador</option>
 <option value="venezuela">Venezuela</option>
 <option value="colombia">Colombia</option>
@@ -153,8 +135,8 @@ font-weight:bold;
 <input type="text" placeholder="Ingresa tu nombre">
 
 <label>Tipo de cliente:</label>
-<select>
-<option value=""></option>
+<select required>
+<option value="" disabled selected hidden>Tipo de cliente</option>
 <option>Nuevo</option>
 <option>Antiguo</option>
 </select>
@@ -166,8 +148,8 @@ font-weight:bold;
 <input type="email" placeholder="Correo electrónico">
 
 <label>Selecciona tu método de pago:</label>
-<select id="metodo">
-<option value=""></option>
+<select id="metodo" required>
+<option value="" disabled selected hidden>Forma de pago</option>
 </select>
 
 <div id="comprobanteSection" class="hidden">
@@ -182,8 +164,6 @@ font-weight:bold;
 <div>Total a pagar: <span id="precioTotal">--</span></div>
 </div>
 
-<div id="detallesMetodo" class="detalles-metodo hidden"></div>
-
 <button>Procesar Envío</button>
 
 </div>
@@ -194,12 +174,11 @@ const pais = document.getElementById("pais");
 const metodo = document.getElementById("metodo");
 const precioTotal = document.getElementById("precioTotal");
 const comprobanteSection = document.getElementById("comprobanteSection");
-const detallesMetodo = document.getElementById("detallesMetodo");
 
 let baseUSD = 35;
 
 function cargarMetodos(){
-metodo.innerHTML='<option value=""></option>';
+metodo.innerHTML='<option value="" disabled selected hidden>Forma de pago</option>';
 
 if(pais.value==="ecuador"){
 metodo.innerHTML+=`
@@ -220,24 +199,15 @@ actualizar();
 
 function actualizar(){
 
-if(!pais.value){
+if(!pais.value || !metodo.value){
 precioTotal.textContent="--";
 comprobanteSection.classList.add("hidden");
-detallesMetodo.classList.add("hidden");
-return;
-}
-
-if(!metodo.value){
-precioTotal.textContent="--";
-detallesMetodo.classList.add("hidden");
 return;
 }
 
 comprobanteSection.classList.remove("hidden");
-detallesMetodo.classList.remove("hidden");
 
 let total = baseUSD;
-let moneda="USD";
 
 if(metodo.value==="paypal"){
 total = baseUSD * 1.065;
@@ -245,56 +215,6 @@ precioTotal.innerHTML='<span class="total-rojo">'+total.toFixed(2)+' USD</span>'
 }else{
 precioTotal.textContent = total.toFixed(2)+' USD';
 }
-
-mostrarDetalles();
-}
-
-function mostrarDetalles(){
-
-if(metodo.value==="pichincha"){
-detallesMetodo.innerHTML=`
-<strong>Banco Pichincha</strong><br><br>
-Cuenta: 2212341155<br>
-CI: 1753616547<br><br>
-⚠️ Es obligatorio ingresar el siguiente correo al momento de transferir:<br>
-<strong>axxell.klk@gmail.com</strong>
-`;
-}
-
-if(metodo.value==="guayaquil"){
-detallesMetodo.innerHTML=`
-<strong>Banco Guayaquil</strong><br><br>
-Titular: Boada Acurio Jeamileth Abigail<br>
-Cuenta: 0047261389<br>
-CI: 1753616547
-`;
-}
-
-if(metodo.value==="bolivariano"){
-detallesMetodo.innerHTML=`
-<strong>Banco Bolivariano</strong><br><br>
-Titular: Jeamileth Boada Acurio<br>
-Cuenta: 0031425755<br>
-CI: 1753616547<br><br>
-⚠️ Es obligatorio ingresar el siguiente correo al momento de transferir:<br>
-<strong>axxell.klk@gmail.com</strong>
-`;
-}
-
-if(metodo.value==="binance"){
-detallesMetodo.innerHTML=`
-<strong>Binance</strong><br><br>
-Pago en USDT (Red TRC20)
-`;
-}
-
-if(metodo.value==="paypal"){
-detallesMetodo.innerHTML=`
-<strong>PayPal</strong><br><br>
-Comisión del 6.5% aplicada automáticamente.
-`;
-}
-
 }
 
 pais.addEventListener("change",cargarMetodos);
