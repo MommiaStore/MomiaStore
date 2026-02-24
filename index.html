@@ -6,71 +6,93 @@
 <title>Recibo de envío | Momia Store</title>
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background: linear-gradient(135deg, #0f172a, #1e293b);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .container {
-    background: #1e293b;
-    padding: 40px;
-    border-radius: 15px;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 50px 40px;
+    border-radius: 20px;
     width: 100%;
-    max-width: 500px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    max-width: 520px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
 }
 
 .logo {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .logo img {
-    width: 250px;
+    width: 320px;
+    display: block;
+    margin: 0 auto;
 }
 
 h2 {
     text-align: center;
-    color: white;
-    margin-bottom: 25px;
+    color: #f1f5f9;
+    font-weight: 500;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
 }
 
 label {
     color: #cbd5e1;
     font-size: 14px;
+    margin-bottom: 6px;
     display: block;
-    margin-bottom: 5px;
 }
 
 input, select {
     width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 20px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background-color: #0f172a;
+    color: white;
+    margin-bottom: 22px;
     font-size: 14px;
+    transition: 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
 }
 
 button {
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background: linear-gradient(90deg, #2563eb, #3b82f6);
     color: white;
     font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 button:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59,130,246,0.4);
 }
+
 </style>
 </head>
 
@@ -79,7 +101,7 @@ button:hover {
 <div class="container">
 
     <div class="logo">
-        <img src="logo.jpg" alt="Momia Store">
+        <img src="logo.png" alt="Momia Store">
     </div>
 
     <h2>Recibo de envío</h2>
@@ -98,7 +120,7 @@ button:hover {
         <label>Selecciona tu método de pago:</label>
         <select required>
             <option value="">Elige una opción</option>
-            <option>Transferencia</option>
+            <option>Transferencia bancaria</option>
             <option>Depósito</option>
             <option>Pago móvil</option>
         </select>
@@ -106,7 +128,7 @@ button:hover {
         <label>Comprobante de pago:</label>
         <input type="file" required>
 
-        <button type="submit">Procesar Envío</button>
+        <button type="submit">Procesar envío</button>
 
     </form>
 
