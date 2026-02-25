@@ -62,7 +62,6 @@ box-shadow:0 0 35px rgba(0,140,255,0.08);
 width:120px;
 border-radius:18px;
 flex-shrink:0;
-box-shadow:0 0 25px rgba(0,0,0,0.6);
 }
 
 .product-info h3{
@@ -71,24 +70,16 @@ font-size:22px;
 color:#ffffff;
 }
 
-.product-info p{
-margin:4px 0;
-font-size:14px;
-color:#9db4d4;
-}
-
 .price{
 color:#3b82f6;
 font-weight:700;
 font-size:17px;
-margin-top:8px;
 }
 
 label{
 display:block;
 margin-top:22px;
 margin-bottom:8px;
-font-weight:500;
 color:#c7dbff;
 }
 
@@ -102,6 +93,10 @@ color:#ffffff;
 font-size:15px;
 }
 
+input::placeholder{
+color:#6b85b5;
+}
+
 .hidden{display:none;}
 
 .resumen{
@@ -110,13 +105,6 @@ padding:25px;
 background:#0a1326;
 border-radius:18px;
 border:1px solid rgba(59,130,246,0.25);
-}
-
-.resumen hr{
-border:none;
-height:1px;
-background:rgba(255,255,255,0.1);
-margin:15px 0;
 }
 
 .totalFinal{
@@ -136,9 +124,7 @@ color:white;
 font-size:18px;
 font-weight:600;
 cursor:pointer;
-box-shadow:0 0 25px rgba(59,130,246,0.5);
 }
-
 </style>
 </head>
 
@@ -160,7 +146,7 @@ box-shadow:0 0 25px rgba(59,130,246,0.5);
 <div class="product-info">
 <h3 id="productoNombre"></h3>
 <p>Tipo: Cuenta Principal</p>
-<p class="price">Precio base: <span id="precioBaseTop"></span> <span id="monedaTop">USD</span></p>
+<p class="price">Precio base: <span id="precioBaseTop"></span> <span id="monedaTop"></span></p>
 </div>
 </div>
 
@@ -177,24 +163,24 @@ box-shadow:0 0 25px rgba(59,130,246,0.5);
 </select>
 
 <label>Nombre:</label>
-<input type="text">
+<input type="text" placeholder="Ingresa tu nombre completo">
 
 <label>Tipo de cliente:</label>
 <select>
-<option value="" disabled selected hidden>Tipo de cliente</option>
+<option value="" disabled selected hidden>Seleccione tipo de cliente</option>
 <option>Nuevo</option>
 <option>Antiguo</option>
 </select>
 
 <label>WhatsApp:</label>
-<input type="text">
+<input type="text" placeholder="+593 99 123 4567">
 
 <label>Correo electrónico:</label>
-<input type="email">
+<input type="email" placeholder="ejemplo@correo.com">
 
 <label>Forma de pago:</label>
 <select id="metodoPago">
-<option value="" disabled selected hidden>Seleccione método</option>
+<option value="" disabled selected hidden>Seleccione método de pago</option>
 </select>
 
 <div id="datosPago" class="hidden" style="margin-top:20px;"></div>
@@ -206,14 +192,9 @@ box-shadow:0 0 25px rgba(59,130,246,0.5);
 
 <div class="resumen hidden" id="resumenBox">
 <h3>Resumen del pedido</h3>
-<p>Precio base: <span id="precioBaseBottom"></span> <span id="monedaBottom">USD</span></p>
-<p id="comisionLinea" class="hidden" style="color:#ef4444;">
-Comisión PayPal: <span id="comisionValor"></span>
-</p>
-<hr>
-<p class="totalFinal">
-Total a pagar: <span id="totalFinal"></span>
-</p>
+<p id="precioBaseLinea"></p>
+<p id="comisionLinea" class="hidden"></p>
+<p class="totalFinal" id="totalFinal"></p>
 </div>
 
 <button>Proceder con el envío</button>
@@ -221,130 +202,124 @@ Total a pagar: <span id="totalFinal"></span>
 </div>
 
 <script>
+
 const params = new URLSearchParams(window.location.search);
 const producto = params.get("producto");
 const precio = parseFloat(params.get("precio")) || 0;
 const imagen = params.get("imagen");
 
-const productBox = document.getElementById("productBox");
-const resumenBox = document.getElementById("resumenBox");
-const paisSelector = document.getElementById("paisSelector");
-const metodoPago = document.getElementById("metodoPago");
-
-let moneda = "USD";
 let precioBase = precio;
+let moneda = "USD";
+
+const tasas = {
+Venezuela:36,
+Colombia:4000,
+México:17,
+Perú:3.8,
+Argentina:900,
+Chile:900
+};
+
+const simbolos = {
+USD:"USD",
+Venezuela:"Bs",
+Colombia:"COP",
+México:"MXN",
+Perú:"PEN",
+Argentina:"ARS",
+Chile:"CLP"
+};
 
 if(producto){
-productBox.classList.remove("hidden");
-resumenBox.classList.remove("hidden");
-document.getElementById("productoNombre").textContent = producto;
-document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
-document.getElementById("precioBaseBottom").textContent = precioBase.toFixed(2);
-document.getElementById("totalFinal").textContent = precioBase.toFixed(2) + " USD";
-if(imagen){document.getElementById("productoImagen").src = imagen;}
+document.getElementById("productBox").classList.remove("hidden");
+document.getElementById("resumenBox").classList.remove("hidden");
+document.getElementById("productoNombre").textContent=producto;
+if(imagen){document.getElementById("productoImagen").src=imagen;}
 }
+
+function actualizarResumen(){
+document.getElementById("precioBaseLinea").textContent="Precio base: "+precioBase.toFixed(2)+" "+moneda;
+document.getElementById("totalFinal").textContent="Total a pagar: "+precioBase.toFixed(2)+" "+moneda;
+document.getElementById("precioBaseTop").textContent=precioBase.toFixed(2);
+document.getElementById("monedaTop").textContent=moneda;
+}
+
+actualizarResumen();
 
 paisSelector.addEventListener("change",function(){
 
-metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método</option>';
+metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
 
 if(this.value==="Ecuador"){
+moneda="USD";
 metodoPago.innerHTML+=`
 <option value="guayaquil">Banco Guayaquil</option>
 <option value="pichincha">Banco Pichincha</option>
-<option value="bolivariano">Banco Bolivariano</option>
-`;
-moneda="USD";
+<option value="bolivariano">Banco Bolivariano</option>`;
+precioBase=precio;
 }
+
 else{
+moneda=simbolos[this.value];
+precioBase=precio*tasas[this.value];
 metodoPago.innerHTML+=`
 <option value="binance">Binance</option>
-<option value="paypal">PayPal</option>
-`;
-moneda="USD";
+<option value="paypal">PayPal</option>`;
 }
 
-document.getElementById("monedaTop").textContent=moneda;
-document.getElementById("monedaBottom").textContent=moneda;
-document.getElementById("totalFinal").textContent=precioBase.toFixed(2)+" "+moneda;
+actualizarResumen();
 });
+
 metodoPago.addEventListener("change",function(){
 
-let total = precioBase;
-const datosPago = document.getElementById("datosPago");
-const comprobanteBox = document.getElementById("comprobanteBox");
-
-datosPago.classList.remove("hidden");
-comprobanteBox.classList.remove("hidden");
+document.getElementById("datosPago").classList.remove("hidden");
+document.getElementById("comprobanteBox").classList.remove("hidden");
 document.getElementById("comisionLinea").classList.add("hidden");
 
-/* =========================
-   COMISIÓN PAYPAL
-========================= */
+let total=precioBase;
 
 if(this.value==="paypal"){
-let comision = precioBase * 0.065;
-total = precioBase + comision;
+moneda="USD";
+precioBase=precio;
+let comision=precio*0.065;
+total=precio+comision;
+
 document.getElementById("comisionLinea").classList.remove("hidden");
-document.getElementById("comisionValor").textContent = comision.toFixed(2) + " " + moneda;
+document.getElementById("comisionLinea").textContent="Comisión PayPal (6.5%): "+comision.toFixed(2)+" USD";
 }
 
-/* =========================
-   ACTUALIZAR TOTAL
-========================= */
+document.getElementById("totalFinal").textContent="Total a pagar: "+total.toFixed(2)+" "+moneda;
 
-document.getElementById("totalFinal").textContent = total.toFixed(2) + " " + moneda;
-
-/* =========================
-   MOSTRAR DATOS SEGÚN MÉTODO
-========================= */
-
-if(this.value==="Detalles del método seleccionado:"){
-datosPago.innerHTML = `
-<strong>Banco Guayaquil</strong><br><br>
-Titular: Boada Acurio Jeamileth Abigail<br>
+if(this.value==="guayaquil"){
+datosPago.innerHTML=`Banco Guayaquil<br>
 Cuenta Ahorros: 0047261389<br>
-Cédula: 1753616547<br><br>
-⚠️ Es obligatorio colocar el correo <strong>axxell.klk@gmail.com</strong> al realizar la transferencia para verificación inmediata.
-`;
+Cédula: 1753616547<br>
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com en la transferencia.`;
 }
 
-if(this.value==="Detalles del método seleccionado:"){
-datosPago.innerHTML = `
-<strong>Banco Pichincha</strong><br><br>
-Titular: Boada Acurio Jeamileth Abigail<br>
-Cuenta Ahorros: 2212341155<br>
-Cédula: 1753616547<br><br>
-⚠️ Es obligatorio colocar el correo <strong>axxell.klk@gmail.com</strong>  al realizar la transferencia para verificación inmediata.
-`;
+if(this.value==="pichincha"){
+datosPago.innerHTML=`Banco Pichincha<br>
+Cuenta Ahorro Transaccional: 2212341155<br>
+Cédula: 1753616547<br>
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com.`;
 }
 
-if(this.value==="Detalles del método seleccionado:"){
-datosPago.innerHTML = `
-<strong>Banco Bolivariano</strong><br><br>
-Titular: Boada Acurio Jeamileth Abigail<br>
+if(this.value==="bolivariano"){
+datosPago.innerHTML=`Banco Bolivariano<br>
 Cuenta Ahorros: 0031425755<br>
-Cédula: 1753616547<br><br>
-⚠️ Es obligatorio colocar el correo <strong>axxell.klk@gmail.com</strong>  al realizar la transferencia para verificación inmediata.
-`;
+Cédula: 1753616547<br>
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com.`;
 }
 
-if(this.value==="Detalles del método seleccionado:"){
-datosPago.innerHTML = `
-<strong>Binance (USDT)</strong><br><br>
-USDT<br>
+if(this.value==="binance"){
+datosPago.innerHTML=`Binance (USDT)<br>
 Correo: adonis.klk@icloud.com<br>
-ID BINANCE: 1021396902.<br>
-Luego adjuntar comprobante.
-`;
+ID: 1021396902`;
 }
 
-if(this.value==="Detalles del método seleccionado:"){
-datosPago.innerHTML = `
-<strong>PayPal</strong><br><br>
-Se aplica comisión del 6.5%.<br>
-
-`;
+if(this.value==="paypal"){
+datosPago.innerHTML=`PayPal<br>
+Correo: axxell.klk@gmail.com`;
 }
 
 });
