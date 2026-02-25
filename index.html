@@ -155,8 +155,8 @@ cursor:pointer;
 <h3 id="productoNombre"></h3>
 <p>Tipo: Cuenta Principal</p>
 <p class="price">
-Precio base:
-<span id="precioBaseTop"></span>
+Precio base: 
+<span id="precioBaseTop"></span> 
 <span id="monedaTop"></span>
 </p>
 </div>
@@ -173,6 +173,22 @@ Precio base:
 <option value="Argentina">Argentina</option>
 <option value="Chile">Chile</option>
 </select>
+
+<label>Nombre:</label>
+<input type="text" placeholder="Ingresa tu nombre">
+
+<label>Tipo de cliente:</label>
+<select>
+<option value="" disabled selected hidden>Seleccione tipo de cliente</option>
+<option>Nuevo</option>
+<option>Antiguo</option>
+</select>
+
+<label>WhatsApp:</label>
+<input type="text" placeholder="+000 99 123 4567">
+
+<label>Correo electrónico:</label>
+<input type="email" placeholder="ejemplo@correo.com">
 
 <label>Forma de pago:</label>
 <select id="metodoPago">
@@ -211,24 +227,15 @@ let moneda = "USD";
 if(producto && precio){
 document.getElementById("productBox").classList.remove("hidden");
 document.getElementById("resumenBox").classList.remove("hidden");
+
 document.getElementById("productoNombre").textContent = producto;
 document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
 document.getElementById("monedaTop").textContent = moneda;
+
 if(imagen){
 document.getElementById("productoImagen").src = imagen;
 }
 }
-
-function actualizarResumen(){
-document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
-document.getElementById("monedaTop").textContent = moneda;
-document.getElementById("precioBaseLinea").textContent =
-"Precio base: " + precioBase.toFixed(2) + " " + moneda;
-document.getElementById("totalFinal").textContent =
-"Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
-}
-
-actualizarResumen();
 
 const tasas = {
 Venezuela:36,
@@ -239,15 +246,43 @@ Argentina:900,
 Chile:900
 };
 
+function actualizarResumen(){
+document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
+document.getElementById("monedaTop").textContent = moneda;
+
+document.getElementById("precioBaseLinea").textContent =
+"Precio base: " + precioBase.toFixed(2) + " " + moneda;
+
+document.getElementById("totalFinal").textContent =
+"Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
+}
+
+actualizarResumen();
+
 document.getElementById("paisSelector").addEventListener("change", function(){
 
 const metodoPago = document.getElementById("metodoPago");
-metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
+const comisionLinea = document.getElementById("comisionLinea");
+
+comisionLinea.classList.add("hidden");
+comisionLinea.textContent = "";
+metodoPago.selectedIndex = 0;
+document.getElementById("datosPago").classList.add("hidden");
+document.getElementById("comprobanteBox").classList.add("hidden");
 
 precioBase = precio;
-moneda = "USD";
 
-if(this.value !== "Ecuador"){
+metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
+
+if(this.value==="Ecuador"){
+moneda="USD";
+precioBase=precio;
+
+metodoPago.innerHTML+=`
+<option value="guayaquil">Banco Guayaquil</option>
+<option value="pichincha">Banco Pichincha</option>
+<option value="bolivariano">Banco Bolivariano</option>`;
+}else{
 moneda = {
 Venezuela:"VES",
 Colombia:"COP",
@@ -256,13 +291,12 @@ Perú:"PEN",
 Argentina:"ARS",
 Chile:"CLP"
 }[this.value];
+
 precioBase = precio * tasas[this.value];
-metodoPago.innerHTML+=`<option value="binance">Binance</option>
+
+metodoPago.innerHTML+=`
+<option value="binance">Binance</option>
 <option value="paypal">PayPal</option>`;
-}else{
-metodoPago.innerHTML+=`<option value="guayaquil">Banco Guayaquil</option>
-<option value="pichincha">Banco Pichincha</option>
-<option value="bolivariano">Banco Bolivariano</option>`;
 }
 
 actualizarResumen();
@@ -283,6 +317,7 @@ comisionLinea.textContent="";
 let total = precioBase;
 
 if(this.value==="paypal"){
+
 let comision = precio * 0.065;
 let totalUSD = precio + comision;
 
