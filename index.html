@@ -20,7 +20,6 @@ padding:0 20px 40px 20px;
 color:white;
 }
 
-/* LOGO MISMO TAMAÑO, SIN ESPACIO */
 .logo{
 margin:0;
 padding:0;
@@ -33,7 +32,6 @@ display:block;
 margin:0 auto;
 }
 
-/* RECUADRO SUBIDO AGRESIVO */
 .card{
 background:rgba(30,41,59,0.95);
 width:100%;
@@ -41,9 +39,7 @@ max-width:1100px;
 border-radius:25px;
 padding:45px;
 box-shadow:0 25px 60px rgba(0,0,0,0.6);
-
-/* 🔥 aquí está la magia */
-margin-top:-60px; /* lo pegamos fuerte */
+margin-top:-60px;
 }
 
 .header{
@@ -93,6 +89,13 @@ padding:20px;
 background:#0f172a;
 border-radius:15px;
 border:1px solid #334155;
+}
+
+.resumen img{
+width:120px;
+border-radius:10px;
+margin-bottom:15px;
+display:block;
 }
 
 button{
@@ -171,16 +174,44 @@ margin-top:-40px;
 <option value="" disabled selected hidden>Forma de pago</option>
 </select>
 
-<div class="resumen">
+<div class="resumen hidden" id="resumenBox">
 <h3>Resumen del pedido</h3>
-<div>Producto seleccionado: <strong>Black Myth: Wukong</strong></div>
-<div>Precio base: 35.00 USD</div>
-<div>Total a pagar: --</div>
+<div id="imagenContainer"></div>
+<div>Producto seleccionado: <strong id="productoNombre">---</strong></div>
+<div>Precio base: <span id="precioBase">---</span> USD</div>
+<div>Total a pagar: <span id="totalPagar">---</span> USD</div>
 </div>
 
 <button>Procesar Envío</button>
 
 </div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const producto = params.get("producto");
+const precio = params.get("precio");
+const imagen = params.get("imagen");
+
+if(producto || precio || imagen){
+    document.getElementById("resumenBox").classList.remove("hidden");
+}
+
+if(producto){
+    document.getElementById("productoNombre").textContent = producto;
+}
+
+if(precio){
+    document.getElementById("precioBase").textContent = precio;
+    document.getElementById("totalPagar").textContent = precio;
+}
+
+if(imagen){
+    const img = document.createElement("img");
+    img.src = imagen;
+    document.getElementById("imagenContainer").appendChild(img);
+}
+</script>
 
 </body>
 </html>
