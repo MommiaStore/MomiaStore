@@ -111,6 +111,12 @@ border-radius:18px;
 border:1px solid rgba(59,130,246,0.25);
 }
 
+.linea-separadora{
+height:1px;
+background:linear-gradient(to right,transparent,rgba(255,255,255,0.25),transparent);
+margin:12px 0 18px 0;
+}
+
 .totalFinal{
 color:#ef4444;
 font-size:22px;
@@ -201,6 +207,9 @@ Precio base:
 <div class="resumen hidden" id="resumenBox">
 <h3>Resumen del pedido</h3>
 <p id="precioBaseLinea"></p>
+
+<div class="linea-separadora"></div>
+
 <p id="comisionLinea" class="hidden"></p>
 <p class="totalFinal" id="totalFinal"></p>
 </div>
@@ -313,7 +322,8 @@ comisionLinea.textContent = "Comisión PayPal (6.5%): " + comision.toFixed(2) + 
 if(pais!=="Ecuador"){
 let equivalente=totalUSD*tasas[pais];
 totalFinal.innerHTML=
-"Total a pagar: "+totalUSD.toFixed(2)+" USD<br><span style='font-size:14px;color:#9db4ff;'>Equivalente aproximado: "+equivalente.toFixed(2)+" "+moneda+"</span>";
+"Equivalente aproximado: "+equivalente.toFixed(2)+" "+moneda+
+"<br><br><span class='totalFinal'>TOTAL A PAGAR: "+totalUSD.toFixed(2)+" USD</span>";
 }else{
 totalFinal.textContent="Total a pagar: "+totalUSD.toFixed(2)+" USD";
 }
@@ -327,9 +337,8 @@ let totalUSD=precio;
 if(pais!=="Ecuador"){
 let equivalenteLocal=precioBase;
 totalFinal.innerHTML=
-"Precio base: "+equivalenteLocal.toFixed(2)+" "+moneda+
-"<br><span style='font-size:14px;color:#9db4ff;'>Equivalente en USD: "+totalUSD.toFixed(2)+" USD</span>"+
-"<br><br><span style='color:#ef4444;font-size:22px;font-weight:800;'>TOTAL A PAGAR: "+totalUSD.toFixed(2)+" USD</span>";
+"Equivalente en USD: "+totalUSD.toFixed(2)+" USD"+
+"<br><br><span class='totalFinal'>TOTAL A PAGAR: "+totalUSD.toFixed(2)+" USD</span>";
 }else{
 totalFinal.textContent="Total a pagar: "+totalUSD.toFixed(2)+" USD";
 }
