@@ -238,10 +238,17 @@ if(imagen){document.getElementById("productoImagen").src=imagen;}
 }
 
 function actualizarResumen(){
-document.getElementById("precioBaseLinea").textContent="Precio base: "+precioBase.toFixed(2)+" "+moneda;
-document.getElementById("totalFinal").textContent="Total a pagar: "+precioBase.toFixed(2)+" "+moneda;
-document.getElementById("precioBaseTop").textContent=precioBase.toFixed(2);
-document.getElementById("monedaTop").textContent=moneda;
+
+/* -------- TARJETA SUPERIOR -------- */
+document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
+document.getElementById("monedaTop").textContent = moneda;
+
+/* -------- RESUMEN INFERIOR -------- */
+document.getElementById("precioBaseLinea").textContent =
+"Precio base: " + precioBase.toFixed(2) + " " + moneda;
+
+document.getElementById("totalFinal").textContent =
+"Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
 }
 
 actualizarResumen();
@@ -251,22 +258,51 @@ paisSelector.addEventListener("change",function(){
 metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
 
 if(this.value==="Ecuador"){
-moneda="USD";
-metodoPago.innerHTML+=`
+moneda = "USD";
+precioBase = precio;
+
+metodoPago.innerHTML += `
 <option value="guayaquil">Banco Guayaquil</option>
 <option value="pichincha">Banco Pichincha</option>
-<option value="bolivariano">Banco Bolivariano</option>`;
-precioBase=precio;
+<option value="bolivariano">Banco Bolivariano</option>
+`;
 }
+else if(this.value==="Venezuela"){
+moneda = "Bs";
+precioBase = precio * 36;
 
-else{
-moneda=simbolos[this.value];
-precioBase=precio*tasas[this.value];
-metodoPago.innerHTML+=`
+metodoPago.innerHTML += `
 <option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
+<option value="paypal">PayPal</option>
+`;
 }
+else if(this.value==="México"){
+moneda = "MXN";
+precioBase = precio * 17;
 
+metodoPago.innerHTML += `
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>
+`;
+}
+else if(this.value==="Colombia"){
+moneda = "COP";
+precioBase = precio * 4000;
+
+metodoPago.innerHTML += `
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>
+`;
+}
+else{
+moneda = "USD";
+precioBase = precio;
+
+metodoPago.innerHTML += `
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>
+`;
+}
 actualizarResumen();
 });
 
@@ -290,36 +326,36 @@ document.getElementById("comisionLinea").textContent="Comisión PayPal (6.5%): "
 
 document.getElementById("totalFinal").textContent="Total a pagar: "+total.toFixed(2)+" "+moneda;
 
-if(this.value==="guayaquil"){
+if(this.value==="Detalles del método seleccionado"){
 datosPago.innerHTML=`Banco Guayaquil<br>
 Cuenta Ahorros: 0047261389<br>
 Cédula: 1753616547<br>
-⚠️ Obligatorio colocar correo axxell.klk@gmail.com en la transferencia.`;
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com al momento de realizar la transferencia para verificar de inmediato.`;
 }
 
-if(this.value==="pichincha"){
+if(this.value==="Detalles del método seleccionado"){
 datosPago.innerHTML=`Banco Pichincha<br>
-Cuenta Ahorro Transaccional: 2212341155<br>
+Cuenta Ahorros: 2212341155<br>
 Cédula: 1753616547<br>
-⚠️ Obligatorio colocar correo axxell.klk@gmail.com.`;
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com al momento de realizar la transferencia para verificar de inmediato.`;
 }
 
-if(this.value==="bolivariano"){
+if(this.value==="Detalles del método seleccionado"){
 datosPago.innerHTML=`Banco Bolivariano<br>
 Cuenta Ahorros: 0031425755<br>
 Cédula: 1753616547<br>
-⚠️ Obligatorio colocar correo axxell.klk@gmail.com.`;
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com al momento de realizar la transferencia para verificar de inmediato.`;
 }
 
-if(this.value==="binance"){
+if(this.value==="Detalles del método seleccionado"){
 datosPago.innerHTML=`Binance (USDT)<br>
 Correo: adonis.klk@icloud.com<br>
 ID: 1021396902`;
 }
 
-if(this.value==="paypal"){
+if(this.value==="Detalles del método seleccionado"){
 datosPago.innerHTML=`PayPal<br>
-Correo: axxell.klk@gmail.com`;
+Correo: Para realizar un pago por PayPal escribe a este What's App +593 99528 5372 para procesar el pago con para recibir la información`;
 }
 
 });
