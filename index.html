@@ -20,6 +20,7 @@ padding:0 20px 40px 20px;
 color:#e6f0ff;
 }
 
+/* LOGO */
 .logo img{
 width:650px;
 max-width:100%;
@@ -28,12 +29,13 @@ margin:30px auto 0 auto;
 filter:drop-shadow(0 0 25px rgba(0,140,255,0.35));
 }
 
+/* CARD */
 .card{
 background:linear-gradient(180deg,#0f1c33,#0b1628);
 width:100%;
-max-width:1000px;
+max-width:1100px;
 border-radius:28px;
-padding:40px;
+padding:55px;
 box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 60px rgba(0,140,255,0.15);
 margin-top:-40px;
 border:1px solid rgba(0,140,255,0.15);
@@ -85,8 +87,8 @@ color:#c7dbff;
 
 input,select{
 width:100%;
-padding:15px;
-border-radius:16px;
+padding:16px;
+border-radius:14px;
 border:1px solid rgba(59,130,246,0.25);
 background:#0c162a;
 color:#ffffff;
@@ -107,7 +109,7 @@ border:1px solid rgba(59,130,246,0.25);
 margin-top:30px;
 padding:25px;
 background:#0a1326;
-border-radius:20px;
+border-radius:18px;
 border:1px solid rgba(59,130,246,0.25);
 }
 
@@ -135,6 +137,63 @@ font-size:18px;
 font-weight:600;
 cursor:pointer;
 }
+
+/* ===================== */
+/* MOBILE OPTIMIZATION   */
+/* ===================== */
+
+@media (max-width:768px){
+
+.logo img{
+width:220px;
+margin:20px auto 10px auto;
+}
+
+.card{
+padding:25px 20px;
+margin-top:-20px;
+}
+
+.header{
+margin-bottom:20px;
+}
+
+.product-box{
+padding:18px;
+gap:15px;
+margin-bottom:20px;
+}
+
+.product-box img{
+width:85px;
+}
+
+.product-info h3{
+font-size:18px;
+}
+
+label{
+margin-top:16px;
+margin-bottom:6px;
+}
+
+input,select{
+padding:14px;
+font-size:14px;
+}
+
+.resumen{
+padding:18px;
+margin-top:20px;
+}
+
+button{
+padding:16px;
+font-size:16px;
+}
+
+}
+
 </style>
 </head>
 
@@ -207,9 +266,7 @@ Precio base:
 <div class="resumen hidden" id="resumenBox">
 <h3>Resumen del pedido</h3>
 <p id="precioBaseLinea"></p>
-
 <div class="linea-separadora"></div>
-
 <p id="comisionLinea" class="hidden"></p>
 <p class="totalFinal" id="totalFinal"></p>
 </div>
@@ -218,178 +275,9 @@ Precio base:
 
 </div>
 
+<!-- TU SCRIPT ORIGINAL COMPLETO AQUÍ -->
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-
-const params = new URLSearchParams(window.location.search);
-const producto = params.get("producto");
-const precio = parseFloat(params.get("precio")) || 0;
-const imagen = params.get("imagen");
-
-let precioBase = precio;
-let moneda = "USD";
-
-const tasas = {
-Venezuela:36,
-Colombia:4000,
-México:17,
-Perú:3.8,
-Argentina:900,
-Chile:900
-};
-
-if(producto && precio){
-document.getElementById("productBox").classList.remove("hidden");
-document.getElementById("resumenBox").classList.remove("hidden");
-document.getElementById("productoNombre").textContent = producto;
-document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
-document.getElementById("monedaTop").textContent = moneda;
-if(imagen){
-document.getElementById("productoImagen").src = imagen;
-}
-}
-
-function actualizarResumen(){
-document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
-document.getElementById("monedaTop").textContent = moneda;
-document.getElementById("precioBaseLinea").textContent =
-"Precio base: " + precioBase.toFixed(2) + " " + moneda;
-document.getElementById("totalFinal").textContent =
-"Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
-}
-
-actualizarResumen();
-
-document.getElementById("paisSelector").addEventListener("change", function(){
-
-const metodoPago = document.getElementById("metodoPago");
-const comisionLinea = document.getElementById("comisionLinea");
-
-comisionLinea.classList.add("hidden");
-comisionLinea.textContent = "";
-metodoPago.selectedIndex = 0;
-document.getElementById("datosPago").classList.add("hidden");
-document.getElementById("comprobanteBox").classList.add("hidden");
-
-precioBase = precio;
-metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
-
-if(this.value==="Ecuador"){
-moneda="USD";
-precioBase=precio;
-metodoPago.innerHTML+=`
-<option value="guayaquil">Banco Guayaquil</option>
-<option value="pichincha">Banco Pichincha</option>
-<option value="bolivariano">Banco Bolivariano</option>`;
-}else{
-moneda={
-Venezuela:"VES",
-Colombia:"COP",
-México:"MXN",
-Perú:"PEN",
-Argentina:"ARS",
-Chile:"CLP"
-}[this.value];
-precioBase=precio*tasas[this.value];
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
-actualizarResumen();
-});
-
-document.getElementById("metodoPago").addEventListener("change",function(){
-
-const datosPago = document.getElementById("datosPago");
-const comisionLinea = document.getElementById("comisionLinea");
-const totalFinal = document.getElementById("totalFinal");
-const pais = document.getElementById("paisSelector").value;
-
-datosPago.classList.remove("hidden");
-document.getElementById("comprobanteBox").classList.remove("hidden");
-comisionLinea.classList.add("hidden");
-comisionLinea.textContent="";
-
-if(this.value==="paypal"){
-
-let comision = precio * 0.065;
-let totalUSD = precio + comision;
-
-comisionLinea.classList.remove("hidden");
-comisionLinea.textContent = "Comisión PayPal (6.5%): " + comision.toFixed(2) + " USD";
-
-if(pais!=="Ecuador"){
-let equivalente=totalUSD*tasas[pais];
-totalFinal.innerHTML=
-"Equivalente aproximado: "+equivalente.toFixed(2)+" "+moneda+
-"<br><br><span class='totalFinal'>TOTAL A PAGAR: "+totalUSD.toFixed(2)+" USD</span>";
-}else{
-totalFinal.textContent="Total a pagar: "+totalUSD.toFixed(2)+" USD";
-}
-
-}
-
-else if(this.value==="binance"){
-
-let totalUSD=precio;
-
-if(pais!=="Ecuador"){
-let equivalenteLocal=precioBase;
-totalFinal.innerHTML=
-"Equivalente en USD: "+totalUSD.toFixed(2)+" USD"+
-"<br><br><span class='totalFinal'>TOTAL A PAGAR: "+totalUSD.toFixed(2)+" USD</span>";
-}else{
-totalFinal.textContent="Total a pagar: "+totalUSD.toFixed(2)+" USD";
-}
-
-}
-
-else{
-totalFinal.textContent="Total a pagar: "+precioBase.toFixed(2)+" "+moneda;
-}
-
-if(this.value==="guayaquil"){
-datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
-Boada Acurio Jeamileth Abigail<br>
-Cuenta Ahorros: 0047261389<br>
-Cédula: 1753616547<br>
-⚠️ Antes de realizar la transferencia, por favor ingresar el correo electrónico para verificar de forma inmediata su transferencia
-contacto@momiastore.com`;
-}
-
-if(this.value==="pichincha"){
-datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
-Boada Acurio Jeamileth Abigail<br>
-Cuenta Ahorros: 2212341155<br>
-Cédula: 1753616547<br>
-⚠️ Antes de realizar la transferencia, por favor ingresar el correo electrónico para verificar de forma inmediata su transferencia
-contacto@momiastore.com`;
-}
-
-if(this.value==="bolivariano"){
-datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
-Boada Acurio Jeamileth Abigail<br>
-Cuenta Ahorros: 0031425755<br>
-Cédula: 1753616547<br>
-⚠️ Antes de realizar la transferencia, por favor ingresar el correo electrónico para verificar de forma inmediata su transferencia
-contacto@momiastore.com`;
-}
-
-if(this.value==="binance"){
-datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
-Correo: adonis.klk@icloud.com<br>
-ID: 1021396902`;
-}
-
-if(this.value==="paypal"){
-datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
-Escribe al WhatsApp +593 99 528 5372 para procesar el pago.`;
-}
-
-});
-
-});
+/* PEGA AQUÍ EXACTAMENTE TU SCRIPT ACTUAL SIN MODIFICAR */
 </script>
 
 </body>
