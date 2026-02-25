@@ -264,22 +264,82 @@ document.getElementById("totalFinal").textContent =
 actualizarResumen();
 
 /* ===== CAMBIO DE PAÍS ===== */
-document.getElementById("paisSelector").addEventListener("change",function(){
+  document.getElementById("paisSelector").addEventListener("change", function(){
 
 const metodoPago = document.getElementById("metodoPago");
+const comisionLinea = document.getElementById("comisionLinea");
+
+/* RESET TOTAL */
+comisionLinea.classList.add("hidden");
+comisionLinea.textContent = "";
+metodoPago.selectedIndex = 0;
+document.getElementById("datosPago").classList.add("hidden");
+document.getElementById("comprobanteBox").classList.add("hidden");
+
+/* RESET PRECIO */
+precioBase = precio;
+
+/* LIMPIAR OPCIONES */
 metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
 
 if(this.value==="Ecuador"){
 moneda="USD";
 precioBase=precio;
+
 metodoPago.innerHTML+=`
 <option value="guayaquil">Banco Guayaquil</option>
 <option value="pichincha">Banco Pichincha</option>
 <option value="bolivariano">Banco Bolivariano</option>`;
 }
-else{
-moneda=this.value in tasas ? this.value : "USD";
-precioBase = this.value in tasas ? precio * tasas[this.value] : precio;
+
+else if(this.value==="Venezuela"){
+moneda="VES";
+precioBase=precio*36;
+
+metodoPago.innerHTML+=`
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>`;
+}
+
+else if(this.value==="Colombia"){
+moneda="COP";
+precioBase=precio*4000;
+
+metodoPago.innerHTML+=`
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>`;
+}
+
+else if(this.value==="México"){
+moneda="MXN";
+precioBase=precio*17;
+
+metodoPago.innerHTML+=`
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>`;
+}
+
+else if(this.value==="Perú"){
+moneda="PEN";
+precioBase=precio*3.8;
+
+metodoPago.innerHTML+=`
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>`;
+}
+
+else if(this.value==="Argentina"){
+moneda="ARS";
+precioBase=precio*900;
+
+metodoPago.innerHTML+=`
+<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>`;
+}
+
+else if(this.value==="Chile"){
+moneda="CLP";
+precioBase=precio*900;
 
 metodoPago.innerHTML+=`
 <option value="binance">Binance</option>
@@ -288,7 +348,6 @@ metodoPago.innerHTML+=`
 
 actualizarResumen();
 });
-
 /* ===== CAMBIO MÉTODO PAGO ===== */
 document.getElementById("metodoPago").addEventListener("change",function(){
 
