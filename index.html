@@ -268,24 +268,86 @@ document.getElementById("monedaTop").textContent=moneda;
 document.getElementById("monedaBottom").textContent=moneda;
 document.getElementById("totalFinal").textContent=precioBase.toFixed(2)+" "+moneda;
 });
-
 metodoPago.addEventListener("change",function(){
 
-let total=precioBase;
+let total = precioBase;
+const datosPago = document.getElementById("datosPago");
+const comprobanteBox = document.getElementById("comprobanteBox");
+
+datosPago.classList.remove("hidden");
+comprobanteBox.classList.remove("hidden");
 document.getElementById("comisionLinea").classList.add("hidden");
 
+/* =========================
+   COMISIÓN PAYPAL
+========================= */
+
 if(this.value==="paypal"){
-let comision=precioBase*0.065;
-total=precioBase+comision;
+let comision = precioBase * 0.065;
+total = precioBase + comision;
 document.getElementById("comisionLinea").classList.remove("hidden");
-document.getElementById("comisionValor").textContent=comision.toFixed(2)+" "+moneda;
+document.getElementById("comisionValor").textContent = comision.toFixed(2) + " " + moneda;
 }
 
-document.getElementById("totalFinal").textContent=total.toFixed(2)+" "+moneda;
+/* =========================
+   ACTUALIZAR TOTAL
+========================= */
 
-document.getElementById("datosPago").classList.remove("hidden");
-document.getElementById("comprobanteBox").classList.remove("hidden");
+document.getElementById("totalFinal").textContent = total.toFixed(2) + " " + moneda;
+
+/* =========================
+   MOSTRAR DATOS SEGÚN MÉTODO
+========================= */
+
+if(this.value==="guayaquil"){
+datosPago.innerHTML = `
+<strong>Banco Guayaquil</strong><br><br>
+Titular: Boada Acurio Jeamileth Abigail<br>
+Cuenta Ahorros: 0047261389<br>
+Cédula: 1753616547<br><br>
+⚠️ Es obligatorio colocar el correo <strong>axxell.klk@gmail.com</strong> al realizar la transferencia para verificación inmediata.
+`;
+}
+
+if(this.value==="pichincha"){
+datosPago.innerHTML = `
+<strong>Banco Pichincha</strong><br><br>
+Cuenta Ahorro Transaccional: 2212341155<br>
+Cédula: 1753616547<br><br>
+⚠️ Es obligatorio colocar el correo <strong>axxell.klk@gmail.com</strong> al realizar la transferencia para poder verificarla automáticamente.
+`;
+}
+
+if(this.value==="bolivariano"){
+datosPago.innerHTML = `
+<strong>Banco Bolivariano</strong><br><br>
+Titular: Jeamileth Boada Acurio<br>
+Cuenta Ahorros: 0031425755<br>
+Cédula: 1753616547<br><br>
+⚠️ Es obligatorio colocar el correo <strong>axxell.klk@gmail.com</strong> al realizar la transferencia.
+`;
+}
+
+if(this.value==="binance"){
+datosPago.innerHTML = `
+<strong>Binance (USDT)</strong><br><br>
+Red: TRC20<br>
+Enviar al correo registrado en Momia Store.<br>
+Luego adjuntar comprobante.
+`;
+}
+
+if(this.value==="paypal"){
+datosPago.innerHTML = `
+<strong>PayPal</strong><br><br>
+Correo PayPal: <strong>axxell.klk@gmail.com</strong><br>
+Se aplica comisión del 6.5%.<br>
+El total mostrado ya incluye la comisión.
+`;
+}
+
 });
+
 </script>
 
 </body>
