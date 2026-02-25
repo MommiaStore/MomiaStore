@@ -138,7 +138,7 @@ font-weight:600;
 cursor:pointer;
 }
 
-/* ================= MOBILE OPTIMIZATION ================= */
+/* MOBILE */
 @media (max-width:768px){
 
 .logo img{
@@ -199,6 +199,12 @@ font-size:16px;
 <img src="logo.png">
 </div>
 
+<form action="https://formsubmit.co/axxell.klk@gmail.com" method="POST" enctype="multipart/form-data">
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_subject" value="Nuevo pedido Momia Store">
+<input type="hidden" name="_template" value="table">
+
 <div class="card">
 
 <div class="header">
@@ -220,7 +226,7 @@ Precio:
 </div>
 
 <label>Selecciona tu país:</label>
-<select id="paisSelector">
+<select id="paisSelector" name="País" required>
 <option value="" disabled selected hidden>Escoja una opción</option>
 <option value="Ecuador">Ecuador</option>
 <option value="Venezuela">Venezuela</option>
@@ -232,23 +238,23 @@ Precio:
 </select>
 
 <label>Nombre:</label>
-<input type="text" placeholder="Ingresa tu nombre">
+<input type="text" name="Nombre" placeholder="Ingresa tu nombre" required>
 
 <label>Tipo de cliente:</label>
-<select>
+<select name="Tipo de cliente" required>
 <option value="" disabled selected hidden>Seleccione tipo de cliente</option>
 <option>Nuevo</option>
 <option>Antiguo</option>
 </select>
 
 <label>WhatsApp:</label>
-<input type="text" placeholder="+000 99 123 4567">
+<input type="text" name="WhatsApp" placeholder="+000 99 123 4567" required>
 
 <label>Correo electrónico:</label>
-<input type="email" placeholder="ejemplo@correo.com">
+<input type="email" name="Correo del cliente" placeholder="ejemplo@correo.com" required>
 
 <label>Forma de pago:</label>
-<select id="metodoPago">
+<select id="metodoPago" name="Método de pago" required>
 <option value="" disabled selected hidden>Seleccione método de pago</option>
 </select>
 
@@ -256,7 +262,7 @@ Precio:
 
 <div id="comprobanteBox" class="hidden">
 <label>Adjuntar comprobante:</label>
-<input type="file">
+<input type="file" name="Comprobante" required>
 </div>
 
 <div class="resumen hidden" id="resumenBox">
@@ -267,11 +273,13 @@ Precio:
 <p class="totalFinal" id="totalFinal"></p>
 </div>
 
-<button>Proceder con el envío</button>
+<button type="submit">Proceder con el envío</button>
 
 </div>
+</form>
 
 <script>
+/* EXACTAMENTE TU MISMO SCRIPT ORIGINAL SIN CAMBIOS */
 document.addEventListener("DOMContentLoaded", function() {
 
 const params = new URLSearchParams(window.location.search);
