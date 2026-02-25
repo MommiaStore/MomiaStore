@@ -193,20 +193,20 @@ Precio:
 </select>
 
 <label>Nombre:</label>
-<input type="text" placeholder="Ingresa tu nombre">
+<input type="text" id="nombreInput" placeholder="Ingresa tu nombre">
 
 <label>Tipo de cliente:</label>
-<select>
+<select id="tipoClienteInput">
 <option value="" disabled selected hidden>Seleccione tipo de cliente</option>
 <option>Nuevo</option>
 <option>Antiguo</option>
 </select>
 
 <label>WhatsApp:</label>
-<input type="text" placeholder="+000 99 123 4567">
+<input type="text" id="whatsappInput" placeholder="+000 99 123 4567">
 
 <label>Correo electrónico:</label>
-<input type="email" placeholder="ejemplo@correo.com">
+<input type="email" id="correoInput" placeholder="ejemplo@correo.com">
 
 <label>Forma de pago:</label>
 <select id="metodoPago">
@@ -217,7 +217,7 @@ Precio:
 
 <div id="comprobanteBox" class="hidden">
 <label>Adjuntar comprobante:</label>
-<input type="file">
+<input type="file" id="comprobanteInput">
 </div>
 
 <div class="resumen hidden" id="resumenBox">
@@ -228,15 +228,14 @@ Precio:
 <p class="totalFinal" id="totalFinal"></p>
 </div>
 
-<button>Proceder con el envío</button>
+<button id="enviarBtn">Proceder con el envío</button>
 
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-/* ---- TU SCRIPT ORIGINAL COMPLETO AQUÍ (NO MODIFICADO) ---- */
-
+/* -------- TU SCRIPT ORIGINAL AQUÍ (NO LO TOQUÉ) -------- */
 const params = new URLSearchParams(window.location.search);
 const producto = params.get("producto");
 const precio = parseFloat(params.get("precio")) || 0;
@@ -276,21 +275,21 @@ document.getElementById("totalFinal").textContent =
 
 actualizarResumen();
 
-/* ---- ENVÍO AL CORREO (AGREGADO, NO ALTERA DISEÑO) ---- */
+/* -------- ENVÍO AL CORREO (AGREGADO SIN TOCAR NADA MÁS) -------- */
 
-document.querySelector("button").addEventListener("click", function(e){
+document.getElementById("enviarBtn").addEventListener("click", function(e){
 e.preventDefault();
 
 const formData = new FormData();
-
-formData.append("Nombre", document.querySelector('input[type="text"]').value);
-formData.append("WhatsApp", document.querySelectorAll('input[type="text"]')[1].value);
-formData.append("Correo", document.querySelector('input[type="email"]').value);
+formData.append("Nombre", document.getElementById("nombreInput").value);
+formData.append("Tipo de cliente", document.getElementById("tipoClienteInput").value);
+formData.append("WhatsApp", document.getElementById("whatsappInput").value);
+formData.append("Correo", document.getElementById("correoInput").value);
 formData.append("País", document.getElementById("paisSelector").value);
 formData.append("Método de pago", document.getElementById("metodoPago").value);
 formData.append("Resumen", document.getElementById("totalFinal").textContent);
 
-const archivo = document.querySelector('input[type="file"]').files[0];
+const archivo = document.getElementById("comprobanteInput").files[0];
 if(archivo){
 formData.append("Comprobante", archivo);
 }
@@ -300,15 +299,13 @@ method:"POST",
 headers:{'Accept':'application/json'},
 body:formData
 })
-.then(response => response.json())
-.then(data => {
+.then(res=>res.json())
+.then(()=>{
 alert("Pedido enviado correctamente.");
-location.reload();
 })
-.catch(error => {
+.catch(()=>{
 alert("Error al enviar el pedido.");
 });
-
 });
 
 });
