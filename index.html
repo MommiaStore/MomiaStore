@@ -20,11 +20,6 @@ padding:0 20px 40px 20px;
 color:white;
 }
 
-.logo{
-margin:0;
-padding:0;
-}
-
 .logo img{
 width:650px;
 max-width:100%;
@@ -49,19 +44,49 @@ align-items:center;
 margin-bottom:25px;
 }
 
-.header h2{margin:0;}
+.product-box{
+display:flex;
+gap:20px;
+align-items:center;
+background:#0f172a;
+padding:20px;
+border-radius:15px;
+border:1px solid #334155;
+margin-bottom:30px;
+}
 
-.limpiar{
-color:#ef4444;
-cursor:pointer;
+.product-box img{
+width:130px;
+border-radius:10px;
+}
+
+.product-info h3{
+margin:0 0 8px 0;
+font-size:22px;
+}
+
+.product-info p{
+margin:4px 0;
+color:#94a3b8;
+}
+
+.price{
+color:#22c55e;
 font-weight:600;
+}
+
+.resumen{
+margin-top:25px;
+padding:20px;
+background:#0f172a;
+border-radius:15px;
+border:1px solid #334155;
 }
 
 label{
 display:block;
 margin-top:18px;
 margin-bottom:6px;
-font-weight:500;
 }
 
 input,select{
@@ -71,31 +96,6 @@ border-radius:12px;
 border:1px solid #334155;
 background:#0f172a;
 color:white;
-font-size:14px;
-}
-
-select:invalid{
-color:#94a3b8;
-}
-
-input:focus,select:focus{
-outline:none;
-border-color:#3b82f6;
-}
-
-.resumen{
-margin-top:35px;
-padding:20px;
-background:#0f172a;
-border-radius:15px;
-border:1px solid #334155;
-}
-
-.resumen img{
-width:120px;
-border-radius:10px;
-margin-bottom:15px;
-display:block;
 }
 
 button{
@@ -116,29 +116,30 @@ background:#16a34a;
 }
 
 .hidden{display:none;}
-
-@media(max-width:768px){
-.logo img{
-width:480px;
-}
-.card{
-margin-top:-40px;
-}
-}
 </style>
 </head>
 
 <body>
 
 <div class="logo">
-<img src="logo.png" alt="Momia Store">
+<img src="logo.png">
 </div>
 
 <div class="card">
 
 <div class="header">
 <h2>Recibo de envío</h2>
-<div class="limpiar" onclick="location.reload()">Limpiar</div>
+<div style="color:#ef4444;cursor:pointer;" onclick="location.reload()">Limpiar</div>
+</div>
+
+<!-- TARJETA SUPERIOR DEL PRODUCTO -->
+<div class="product-box hidden" id="productBox">
+<img id="productoImagen">
+<div class="product-info">
+<h3 id="productoNombre"></h3>
+<p id="tipoCuenta">Tipo: Cuenta Principal</p>
+<p class="price">Precio base: <span id="precioBaseTop"></span> USD</p>
+</div>
 </div>
 
 <label>Selecciona tu país:</label>
@@ -174,12 +175,10 @@ margin-top:-40px;
 <option value="" disabled selected hidden>Forma de pago</option>
 </select>
 
+<!-- RESUMEN SIMPLE -->
 <div class="resumen hidden" id="resumenBox">
 <h3>Resumen del pedido</h3>
-<div id="imagenContainer"></div>
-<div>Producto seleccionado: <strong id="productoNombre">---</strong></div>
-<div>Precio base: <span id="precioBase">---</span> USD</div>
-<div>Total a pagar: <span id="totalPagar">---</span> USD</div>
+<p>Precio base: <span id="precioBaseBottom"></span> USD</p>
 </div>
 
 <button>Procesar Envío</button>
@@ -194,22 +193,21 @@ const precio = params.get("precio");
 const imagen = params.get("imagen");
 
 if(producto || precio || imagen){
-    document.getElementById("resumenBox").classList.remove("hidden");
+document.getElementById("productBox").classList.remove("hidden");
+document.getElementById("resumenBox").classList.remove("hidden");
 }
 
 if(producto){
-    document.getElementById("productoNombre").textContent = producto;
+document.getElementById("productoNombre").textContent = producto;
 }
 
 if(precio){
-    document.getElementById("precioBase").textContent = precio;
-    document.getElementById("totalPagar").textContent = precio;
+document.getElementById("precioBaseTop").textContent = precio;
+document.getElementById("precioBaseBottom").textContent = precio;
 }
 
 if(imagen){
-    const img = document.createElement("img");
-    img.src = imagen;
-    document.getElementById("imagenContainer").appendChild(img);
+document.getElementById("productoImagen").src = imagen;
 }
 </script>
 
