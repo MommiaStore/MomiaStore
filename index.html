@@ -232,6 +232,16 @@ const imagen = params.get("imagen");
 
 let precioBase = precio;
 let moneda = "USD";
+  if (producto && precio && imagen) {
+
+    document.getElementById("productBox").classList.remove("hidden");
+
+    document.getElementById("productoNombre").textContent = producto;
+    document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
+    document.getElementById("monedaTop").textContent = moneda;
+
+    document.getElementById("productoImagen").src = imagen;
+}
 
 const tasas = {
 Venezuela:36,
