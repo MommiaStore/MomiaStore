@@ -93,10 +93,6 @@ color:#ffffff;
 font-size:15px;
 }
 
-input::placeholder{
-color:#6b85b5;
-}
-
 .hidden{display:none;}
 
 .caja-metodo{
@@ -224,19 +220,6 @@ const imagen = params.get("imagen");
 let precioBase = precio;
 let moneda = "USD";
 
-if(producto && precio){
-document.getElementById("productBox").classList.remove("hidden");
-document.getElementById("resumenBox").classList.remove("hidden");
-
-document.getElementById("productoNombre").textContent = producto;
-document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
-document.getElementById("monedaTop").textContent = moneda;
-
-if(imagen){
-document.getElementById("productoImagen").src = imagen;
-}
-}
-
 const tasas = {
 Venezuela:36,
 Colombia:4000,
@@ -246,13 +229,22 @@ Argentina:900,
 Chile:900
 };
 
+if(producto && precio){
+document.getElementById("productBox").classList.remove("hidden");
+document.getElementById("resumenBox").classList.remove("hidden");
+document.getElementById("productoNombre").textContent = producto;
+document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
+document.getElementById("monedaTop").textContent = moneda;
+if(imagen){
+document.getElementById("productoImagen").src = imagen;
+}
+}
+
 function actualizarResumen(){
 document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
 document.getElementById("monedaTop").textContent = moneda;
-
 document.getElementById("precioBaseLinea").textContent =
 "Precio base: " + precioBase.toFixed(2) + " " + moneda;
-
 document.getElementById("totalFinal").textContent =
 "Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
 }
@@ -271,19 +263,17 @@ document.getElementById("datosPago").classList.add("hidden");
 document.getElementById("comprobanteBox").classList.add("hidden");
 
 precioBase = precio;
-
 metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
 
 if(this.value==="Ecuador"){
 moneda="USD";
 precioBase=precio;
-
 metodoPago.innerHTML+=`
 <option value="guayaquil">Banco Guayaquil</option>
 <option value="pichincha">Banco Pichincha</option>
 <option value="bolivariano">Banco Bolivariano</option>`;
 }else{
-moneda = {
+moneda={
 Venezuela:"VES",
 Colombia:"COP",
 México:"MXN",
@@ -291,9 +281,7 @@ Perú:"PEN",
 Argentina:"ARS",
 Chile:"CLP"
 }[this.value];
-
-precioBase = precio * tasas[this.value];
-
+precioBase=precio*tasas[this.value];
 metodoPago.innerHTML+=`
 <option value="binance">Binance</option>
 <option value="paypal">PayPal</option>`;
@@ -314,8 +302,6 @@ document.getElementById("comprobanteBox").classList.remove("hidden");
 comisionLinea.classList.add("hidden");
 comisionLinea.textContent="";
 
-let total = precioBase;
-
 if(this.value==="paypal"){
 
 let comision = precio * 0.065;
@@ -324,16 +310,34 @@ let totalUSD = precio + comision;
 comisionLinea.classList.remove("hidden");
 comisionLinea.textContent = "Comisión PayPal (6.5%): " + comision.toFixed(2) + " USD";
 
-if(pais !== "Ecuador"){
-let equivalente = totalUSD * tasas[pais];
-totalFinal.innerHTML =
-"Total a pagar: " + totalUSD.toFixed(2) + " USD<br><span style='font-size:14px;color:#9db4ff;'>Equivalente aproximado: " + equivalente.toFixed(2) + " " + moneda + "</span>";
+if(pais!=="Ecuador"){
+let equivalente=totalUSD*tasas[pais];
+totalFinal.innerHTML=
+"Total a pagar: "+totalUSD.toFixed(2)+" USD<br><span style='font-size:14px;color:#9db4ff;'>Equivalente aproximado: "+equivalente.toFixed(2)+" "+moneda+"</span>";
 }else{
-totalFinal.textContent = "Total a pagar: " + totalUSD.toFixed(2) + " USD";
+totalFinal.textContent="Total a pagar: "+totalUSD.toFixed(2)+" USD";
 }
 
+}
+
+else if(this.value==="binance"){
+
+let totalUSD=precio;
+
+if(pais!=="Ecuador"){
+let equivalenteLocal=precioBase;
+totalFinal.innerHTML=
+"Precio base: "+equivalenteLocal.toFixed(2)+" "+moneda+
+"<br><span style='font-size:14px;color:#9db4ff;'>Equivalente en USD: "+totalUSD.toFixed(2)+" USD</span>"+
+"<br><br><span style='color:#ef4444;font-size:22px;font-weight:800;'>TOTAL A PAGAR: "+totalUSD.toFixed(2)+" USD</span>";
 }else{
-totalFinal.textContent = "Total a pagar: " + total.toFixed(2) + " " + moneda;
+totalFinal.textContent="Total a pagar: "+totalUSD.toFixed(2)+" USD";
+}
+
+}
+
+else{
+totalFinal.textContent="Total a pagar: "+precioBase.toFixed(2)+" "+moneda;
 }
 
 if(this.value==="guayaquil"){
