@@ -149,15 +149,14 @@ cursor:pointer;
 <div onclick="location.reload()" style="cursor:pointer;">Limpiar</div>
 </div>
 
-<!-- PRODUCTO DINÁMICO -->
 <div id="productBox" class="product-box hidden">
 <img id="productoImagen" src="">
 <div class="product-info">
 <h3 id="productoNombre"></h3>
 <p>Tipo: Cuenta Principal</p>
 <p class="price">
-Precio base: 
-<span id="precioBaseTop"></span> 
+Precio base:
+<span id="precioBaseTop"></span>
 <span id="monedaTop"></span>
 </p>
 </div>
@@ -174,22 +173,6 @@ Precio base:
 <option value="Argentina">Argentina</option>
 <option value="Chile">Chile</option>
 </select>
-
-<label>Nombre:</label>
-<input type="text" placeholder="Ingresa tu nombre">
-
-<label>Tipo de cliente:</label>
-<select>
-<option value="" disabled selected hidden>Seleccione tipo de cliente</option>
-<option>Nuevo</option>
-<option>Antiguo</option>
-</select>
-
-<label>WhatsApp:</label>
-<input type="text" placeholder="+000 99 123 4567">
-
-<label>Correo electrónico:</label>
-<input type="email" placeholder="ejemplo@correo.com">
 
 <label>Forma de pago:</label>
 <select id="metodoPago">
@@ -225,21 +208,28 @@ const imagen = params.get("imagen");
 let precioBase = precio;
 let moneda = "USD";
 
-/* ===== MOSTRAR PRODUCTO ===== */
 if(producto && precio){
 document.getElementById("productBox").classList.remove("hidden");
 document.getElementById("resumenBox").classList.remove("hidden");
-
 document.getElementById("productoNombre").textContent = producto;
 document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
 document.getElementById("monedaTop").textContent = moneda;
-
 if(imagen){
 document.getElementById("productoImagen").src = imagen;
 }
 }
 
-/* ===== TASAS ===== */
+function actualizarResumen(){
+document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
+document.getElementById("monedaTop").textContent = moneda;
+document.getElementById("precioBaseLinea").textContent =
+"Precio base: " + precioBase.toFixed(2) + " " + moneda;
+document.getElementById("totalFinal").textContent =
+"Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
+}
+
+actualizarResumen();
+
 const tasas = {
 Venezuela:36,
 Colombia:4000,
@@ -249,107 +239,35 @@ Argentina:900,
 Chile:900
 };
 
-/* ===== ACTUALIZAR RESUMEN ===== */
-function actualizarResumen(){
-document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
-document.getElementById("monedaTop").textContent = moneda;
-
-document.getElementById("precioBaseLinea").textContent =
-"Precio base: " + precioBase.toFixed(2) + " " + moneda;
-
-document.getElementById("totalFinal").textContent =
-"Total a pagar: " + precioBase.toFixed(2) + " " + moneda;
-}
-
-actualizarResumen();
-
-/* ===== CAMBIO DE PAÍS ===== */
-  document.getElementById("paisSelector").addEventListener("change", function(){
+document.getElementById("paisSelector").addEventListener("change", function(){
 
 const metodoPago = document.getElementById("metodoPago");
-const comisionLinea = document.getElementById("comisionLinea");
-
-/* RESET TOTAL */
-comisionLinea.classList.add("hidden");
-comisionLinea.textContent = "";
-metodoPago.selectedIndex = 0;
-document.getElementById("datosPago").classList.add("hidden");
-document.getElementById("comprobanteBox").classList.add("hidden");
-
-/* RESET PRECIO */
-precioBase = precio;
-
-/* LIMPIAR OPCIONES */
 metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
 
-if(this.value==="Ecuador"){
-moneda="USD";
-precioBase=precio;
+precioBase = precio;
+moneda = "USD";
 
-metodoPago.innerHTML+=`
-<option value="guayaquil">Banco Guayaquil</option>
+if(this.value !== "Ecuador"){
+moneda = {
+Venezuela:"VES",
+Colombia:"COP",
+México:"MXN",
+Perú:"PEN",
+Argentina:"ARS",
+Chile:"CLP"
+}[this.value];
+precioBase = precio * tasas[this.value];
+metodoPago.innerHTML+=`<option value="binance">Binance</option>
+<option value="paypal">PayPal</option>`;
+}else{
+metodoPago.innerHTML+=`<option value="guayaquil">Banco Guayaquil</option>
 <option value="pichincha">Banco Pichincha</option>
 <option value="bolivariano">Banco Bolivariano</option>`;
 }
 
-else if(this.value==="Venezuela"){
-moneda="VES";
-precioBase=precio*36;
-
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
-else if(this.value==="Colombia"){
-moneda="COP";
-precioBase=precio*4000;
-
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
-else if(this.value==="México"){
-moneda="MXN";
-precioBase=precio*17;
-
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
-else if(this.value==="Perú"){
-moneda="PEN";
-precioBase=precio*3.8;
-
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
-else if(this.value==="Argentina"){
-moneda="ARS";
-precioBase=precio*900;
-
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
-else if(this.value==="Chile"){
-moneda="CLP";
-precioBase=precio*900;
-
-metodoPago.innerHTML+=`
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>`;
-}
-
 actualizarResumen();
 });
-/* ===== CAMBIO MÉTODO PAGO ===== */
-  
+
 document.getElementById("metodoPago").addEventListener("change",function(){
 
 const datosPago = document.getElementById("datosPago");
@@ -357,59 +275,31 @@ const comisionLinea = document.getElementById("comisionLinea");
 const totalFinal = document.getElementById("totalFinal");
 const pais = document.getElementById("paisSelector").value;
 
-/* RESET VISUAL */
 datosPago.classList.remove("hidden");
 document.getElementById("comprobanteBox").classList.remove("hidden");
 comisionLinea.classList.add("hidden");
 comisionLinea.textContent="";
 
 let total = precioBase;
-let monedaActual = moneda;
 
-/* ================= PAYPAL ================= */
 if(this.value==="paypal"){
-
 let comision = precio * 0.065;
 let totalUSD = precio + comision;
-
-monedaActual = "USD";
-total = totalUSD;
 
 comisionLinea.classList.remove("hidden");
 comisionLinea.textContent = "Comisión PayPal (6.5%): " + comision.toFixed(2) + " USD";
 
-/* EQUIVALENTE LOCAL SI NO ES ECUADOR */
 if(pais !== "Ecuador"){
-
-const tasasCambio = {
-Venezuela:36,
-Colombia:4000,
-México:17,
-Perú:3.8,
-Argentina:900,
-Chile:900
-};
-
-if(tasasCambio[pais]){
-let equivalente = totalUSD * tasasCambio[pais];
+let equivalente = totalUSD * tasas[pais];
 totalFinal.innerHTML =
-"Total a pagar: " + totalUSD.toFixed(2) + " USD<br><span style='font-size:14px;color:#9db4ff;'>"Equivalente aproximado: " + Equivalente.toFixed(2) + " " + moneda + "</span>";
-}
-else{
-totalFinal.textContent = "Total a pagar: " + totalUSD.toFixed(2) + " USD";
-}
-}
-else{
+"Total a pagar: " + totalUSD.toFixed(2) + " USD<br><span style='font-size:14px;color:#9db4ff;'>Equivalente aproximado: " + equivalente.toFixed(2) + " " + moneda + "</span>";
+}else{
 totalFinal.textContent = "Total a pagar: " + totalUSD.toFixed(2) + " USD";
 }
 
+}else{
+totalFinal.textContent = "Total a pagar: " + total.toFixed(2) + " " + moneda;
 }
-else{
-/* OTROS MÉTODOS */
-totalFinal.textContent = "Total a pagar: " + total.toFixed(2) + " " + monedaActual;
-}
-
-/* ================= DATOS DE PAGO ================= */
 
 if(this.value==="guayaquil"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
@@ -441,7 +331,8 @@ Escribe al WhatsApp +593 99 528 5372 para procesar el pago.`;
 }
 
 });
-  
+
+});
 </script>
 
 </body>
