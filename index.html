@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+C<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -148,14 +148,49 @@ cursor:pointer;
 <div onclick="location.reload()">Limpiar</div>
 </div>
 
-<div class="product-box hidden" id="productBox">
-<img id="productoImagen">
-<div class="product-info">
-<h3 id="productoNombre"></h3>
-<p>Tipo: Cuenta Principal</p>
-<p class="price">Precio base: <span id="precioBaseTop"></span> <span id="monedaTop"></span></p>
-</div>
-</div>
+.producto-etiqueta{
+display:inline-block;
+background:#1d4ed8;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+margin-bottom:18px;
+}
+
+.producto-contenido{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.producto-img{
+width:110px;
+border-radius:16px;
+}
+
+.producto-titulo{
+margin:0 0 8px 0;
+font-size:22px;
+font-weight:700;
+color:#ffffff;
+}
+
+.producto-tipo{
+margin:0 0 8px 0;
+color:#9db8ff;
+font-size:14px;
+}
+
+.producto-precio{
+margin:0;
+font-size:16px;
+}
+
+.producto-precio strong{
+color:#22c55e;
+font-size:18px;
+}
 
 <label>Selecciona tu país:</label>
 <select id="paisSelector">
