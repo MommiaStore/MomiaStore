@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-C<html lang="es">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -98,7 +98,8 @@ color:#6b85b5;
 }
 
 .hidden{display:none;}
-  .caja-metodo{
+
+.caja-metodo{
 margin-top:20px;
 padding:20px;
 background:#0a1326;
@@ -145,32 +146,22 @@ cursor:pointer;
 
 <div class="header">
 <h2>Recibo de envío</h2>
-<div onclick="location.reload()">Limpiar</div>
+<div onclick="location.reload()" style="cursor:pointer;">Limpiar</div>
 </div>
 
-<style>
-
-... tu CSS anterior ...
-
-.producto-etiqueta{
-display:inline-block;
-background:#1d4ed8;
-padding:6px 14px;
-border-radius:20px;
-font-size:13px;
-font-weight:600;
-margin-bottom:18px;
-}
-
-.producto-contenido{
-display:flex;
-gap:20px;
-align-items:center;
-}
-
-... etc ...
-
-</style>
+<!-- PRODUCTO DINÁMICO -->
+<div id="productBox" class="product-box hidden">
+<img id="productoImagen" src="">
+<div class="product-info">
+<h3 id="productoNombre"></h3>
+<p>Tipo: Cuenta Principal</p>
+<p class="price">
+Precio base: 
+<span id="precioBaseTop"></span> 
+<span id="monedaTop"></span>
+</p>
+</div>
+</div>
 
 <label>Selecciona tu país:</label>
 <select id="paisSelector">
@@ -224,6 +215,7 @@ align-items:center;
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 
 const params = new URLSearchParams(window.location.search);
 const producto = params.get("producto");
@@ -232,17 +224,22 @@ const imagen = params.get("imagen");
 
 let precioBase = precio;
 let moneda = "USD";
-  if (producto && precio && imagen) {
 
-    document.getElementById("productBox").classList.remove("hidden");
+/* ===== MOSTRAR PRODUCTO ===== */
+if(producto && precio){
+document.getElementById("productBox").classList.remove("hidden");
+document.getElementById("resumenBox").classList.remove("hidden");
 
-    document.getElementById("productoNombre").textContent = producto;
-    document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
-    document.getElementById("monedaTop").textContent = moneda;
+document.getElementById("productoNombre").textContent = producto;
+document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
+document.getElementById("monedaTop").textContent = moneda;
 
-    document.getElementById("productoImagen").src = imagen;
+if(imagen){
+document.getElementById("productoImagen").src = imagen;
+}
 }
 
+/* ===== TASAS ===== */
 const tasas = {
 Venezuela:36,
 Colombia:4000,
@@ -252,30 +249,11 @@ Argentina:900,
 Chile:900
 };
 
-const simbolos = {
-USD:"USD",
-Venezuela:"Bs",
-Colombia:"COP",
-México:"MXN",
-Perú:"PEN",
-Argentina:"ARS",
-Chile:"CLP"
-};
-
-if(producto){
-document.getElementById("productBox").classList.remove("hidden");
-document.getElementById("resumenBox").classList.remove("hidden");
-document.getElementById("productoNombre").textContent=producto;
-if(imagen){document.getElementById("productoImagen").src=imagen;}
-}
-
+/* ===== ACTUALIZAR RESUMEN ===== */
 function actualizarResumen(){
-
-/* -------- TARJETA SUPERIOR -------- */
 document.getElementById("precioBaseTop").textContent = precioBase.toFixed(2);
 document.getElementById("monedaTop").textContent = moneda;
 
-/* -------- RESUMEN INFERIOR -------- */
 document.getElementById("precioBaseLinea").textContent =
 "Precio base: " + precioBase.toFixed(2) + " " + moneda;
 
@@ -285,98 +263,72 @@ document.getElementById("totalFinal").textContent =
 
 actualizarResumen();
 
-paisSelector.addEventListener("change",function(){
+/* ===== CAMBIO DE PAÍS ===== */
+document.getElementById("paisSelector").addEventListener("change",function(){
 
+const metodoPago = document.getElementById("metodoPago");
 metodoPago.innerHTML='<option value="" disabled selected hidden>Seleccione método de pago</option>';
 
 if(this.value==="Ecuador"){
-moneda = "USD";
-precioBase = precio;
-
-metodoPago.innerHTML += `
+moneda="USD";
+precioBase=precio;
+metodoPago.innerHTML+=`
 <option value="guayaquil">Banco Guayaquil</option>
 <option value="pichincha">Banco Pichincha</option>
-<option value="bolivariano">Banco Bolivariano</option>
-`;
-}
-else if(this.value==="Venezuela"){
-moneda = "Bs";
-precioBase = precio * 36;
-
-metodoPago.innerHTML += `
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>
-`;
-}
-else if(this.value==="México"){
-moneda = "MXN";
-precioBase = precio * 17;
-
-metodoPago.innerHTML += `
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>
-`;
-}
-else if(this.value==="Colombia"){
-moneda = "COP";
-precioBase = precio * 4000;
-
-metodoPago.innerHTML += `
-<option value="binance">Binance</option>
-<option value="paypal">PayPal</option>
-`;
+<option value="bolivariano">Banco Bolivariano</option>`;
 }
 else{
-moneda = "USD";
-precioBase = precio;
+moneda=this.value in tasas ? this.value : "USD";
+precioBase = this.value in tasas ? precio * tasas[this.value] : precio;
 
-metodoPago.innerHTML += `
+metodoPago.innerHTML+=`
 <option value="binance">Binance</option>
-<option value="paypal">PayPal</option>
-`;
+<option value="paypal">PayPal</option>`;
 }
+
 actualizarResumen();
 });
 
-metodoPago.addEventListener("change",function(){
+/* ===== CAMBIO MÉTODO PAGO ===== */
+document.getElementById("metodoPago").addEventListener("change",function(){
 
-document.getElementById("datosPago").classList.remove("hidden");
+const datosPago=document.getElementById("datosPago");
+datosPago.classList.remove("hidden");
 document.getElementById("comprobanteBox").classList.remove("hidden");
-document.getElementById("comisionLinea").classList.add("hidden");
 
 let total=precioBase;
 
 if(this.value==="paypal"){
-moneda="USD";
-precioBase=precio;
 let comision=precio*0.065;
 total=precio+comision;
-
+moneda="USD";
 document.getElementById("comisionLinea").classList.remove("hidden");
-document.getElementById("comisionLinea").textContent="Comisión PayPal (6.5%): "+comision.toFixed(2)+" USD";
+document.getElementById("comisionLinea").textContent=
+"Comisión PayPal (6.5%): "+comision.toFixed(2)+" USD";
 }
 
-document.getElementById("totalFinal").textContent="Total a pagar: "+total.toFixed(2)+" "+moneda;
+document.getElementById("totalFinal").textContent=
+"Total a pagar: "+total.toFixed(2)+" "+moneda;
 
 if(this.value==="guayaquil"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
 Cuenta Ahorros: 0047261389<br>
 Cédula: 1753616547<br>
-⚠️ Obligatorio colocar correo axxell.klk@gmail.com al momento de realizar la transferencia para verificar de inmediato.`;
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com para verificar de inmediato.`;
 }
 
 if(this.value==="pichincha"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
 Cuenta Ahorros: 2212341155<br>
 Cédula: 1753616547<br>
-⚠️ Obligatorio colocar correo axxell.klk@gmail.com al momento de realizar la transferencia para verificar de inmediato.`;
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com para verificar de inmediato.`;
 }
 
 if(this.value==="bolivariano"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
 Cuenta Ahorros: 0031425755<br>
 Cédula: 1753616547<br>
-⚠️ Obligatorio colocar correo axxell.klk@gmail.com al momento de realizar la transferencia para verificar de inmediato.`;
+⚠️ Obligatorio colocar correo axxell.klk@gmail.com para verificar de inmediato.`;
 }
 
 if(this.value==="binance"){
@@ -387,11 +339,12 @@ ID: 1021396902`;
 
 if(this.value==="paypal"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
-Para realizar un pago por PayPal escribe a este What's App +593 99 528 5372 para procesar el pago con la información`;
+Escribe al WhatsApp +593 99 528 5372 para procesar el pago.`;
 }
 
 });
 
+});
 </script>
 
 </body>
