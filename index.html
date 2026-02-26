@@ -34,11 +34,10 @@ filter:drop-shadow(0 0 25px rgba(0,140,255,0.35));
 background:linear-gradient(180deg,#0f1c33,#0b1628);
 width:100%;
 max-width:1100px;
+min-width:900px;
 border-radius:28px;
 padding:55px;
-box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 60px rgba(0,140,255,0.15);
-margin-top:-40px;
-border:1px solid rgba(0,140,255,0.15);
+...
 }
 
 .header{
@@ -205,6 +204,7 @@ font-size:16px;
 <div class="header">
 <h2>Recibo de envío</h2>
 <div onclick="location.reload()" style="cursor:pointer;">Limpiar</div>
+<input type="hidden" name="_captcha" value="false">
 </div>
 
 <div id="productBox" class="product-box hidden">
