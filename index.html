@@ -226,7 +226,7 @@ Precio:
 </div>
 
 <label>Selecciona tu país:</label>
-<select id="paisSelector" name="País">
+<select id="paisSelector" name="País" required>
 <option value="" disabled selected hidden>Escoja una opción</option>
 <option value="Ecuador">Ecuador</option>
 <option value="Venezuela">Venezuela</option>
@@ -238,23 +238,23 @@ Precio:
 </select>
 
 <label>Nombre:</label>
-<input type="text" name="Nombre" placeholder="Ingresa tu nombre">
+<input type="text" name="Nombre" placeholder="Ingresa tu nombre" required>
 
 <label>Tipo de cliente:</label>
-<select name="Tipo de cliente">
+<select name="Tipo de cliente" required>
 <option value="" disabled selected hidden>Seleccione tipo de cliente</option>
 <option>Nuevo</option>
 <option>Antiguo</option>
 </select>
 
 <label>WhatsApp:</label>
-<input type="text" name="WhatsApp" placeholder="099 1 23 45678">
+<input type="text" name="WhatsApp" placeholder="099 1 23 45678" required>
 
 <label>Correo electrónico:</label>
-<input type="email" name="Correo" placeholder="ejemplo@correo.com">
+<input type="email" name="Correo" placeholder="ejemplo@correo.com" required>
 
 <label>Forma de pago:</label>
-<select id="metodoPago" name="Método de pago">
+<select id="metodoPago" name="Método de pago" required>
 <option value="" disabled selected hidden>Seleccione método de pago</option>
 </select>
 
@@ -262,7 +262,7 @@ Precio:
 
 <div id="comprobanteBox" class="hidden">
 <label>Adjuntar comprobante:</label>
-<input type="file" name="Comprobante">
+<input type="file" name="Comprobante" required>
 </div>
 
 <div class="resumen hidden" id="resumenBox">
