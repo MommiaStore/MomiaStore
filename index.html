@@ -226,46 +226,43 @@ Precio:
 </div>
 
 <label>Selecciona tu país:</label>
-<select id="paisSelector" name="Pais" required>
-    <option value="" disabled selected hidden>Escoja una opción</option>
-    <option value="Ecuador">Ecuador</option>
-    <option value="Venezuela">Venezuela</option>
-    <option value="Colombia">Colombia</option>
-    <option value="México">México</option>
-    <option value="Perú">Perú</option>
-    <option value="Argentina">Argentina</option>
-    <option value="Chile">Chile</option>
+<select id="paisSelector" name="País">
+<option value="" disabled selected hidden>Escoja una opción</option>
+<option value="Ecuador">Ecuador</option>
+<option value="Venezuela">Venezuela</option>
+<option value="Colombia">Colombia</option>
+<option value="México">México</option>
+<option value="Perú">Perú</option>
+<option value="Argentina">Argentina</option>
+<option value="Chile">Chile</option>
 </select>
 
 <label>Nombre:</label>
-<input type="text" name="Nombre" placeholder="Ingresa tu nombre" required>
+<input type="text" name="Nombre" placeholder="Ingresa tu nombre">
 
 <label>Tipo de cliente:</label>
-<select name="Tipo de Cliente" required>
-    <option value="" disabled selected hidden>Seleccione tipo de cliente</option>
-    <option>Nuevo</option>
-    <option>Antiguo</option>
+<select name="Tipo de cliente">
+<option value="" disabled selected hidden>Seleccione tipo de cliente</option>
+<option>Nuevo</option>
+<option>Antiguo</option>
 </select>
 
 <label>WhatsApp:</label>
-<input type="tel" name="WhatsApp" placeholder="099 1 23 45678" required>
+<input type="text" name="WhatsApp" placeholder="099 1 23 45678">
 
 <label>Correo electrónico:</label>
-<input type="email" name="Correo" placeholder="ejemplo@correo.com" required>
+<input type="email" name="Correo" placeholder="ejemplo@correo.com">
 
 <label>Forma de pago:</label>
-<select name="MetodoPago" required>
-    <option value="" disabled selected hidden>Seleccione método de pago</option>
-    <option>Banco Guayaquil</option>
-    <option>Banco Pichincha</option>
-    <option>Banco Bolivariano</option>
+<select id="metodoPago" name="Método de pago">
+<option value="" disabled selected hidden>Seleccione método de pago</option>
 </select>
- 
+
 <div id="datosPago" class="hidden caja-metodo"></div>
 
 <div id="comprobanteBox" class="hidden">
-<label>Adjuntar Comprobante:</label>
-<input type="file" name="Comprobante" required>
+<label>Adjuntar comprobante:</label>
+<input type="file" name="Comprobante">
 </div>
 
 <div class="resumen hidden" id="resumenBox">
