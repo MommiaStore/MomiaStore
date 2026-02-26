@@ -233,20 +233,20 @@ Precio:
 </select>
 
 <label>Nombre:</label>
-<input type="text" id="nombreInput" name="Nombre" placeholder="Ingresa tu nombre">
+<input type="text" name="Nombre" placeholder="Ingresa tu nombre">
 
 <label>Tipo de cliente:</label>
-<select id="tipoClienteInput" name="Tipo de cliente">
+<select name="Tipo de cliente">
 <option value="" disabled selected hidden>Seleccione tipo de cliente</option>
 <option>Nuevo</option>
 <option>Antiguo</option>
 </select>
 
 <label>WhatsApp:</label>
-<input type="text" id="whatsappInput" name="WhatsApp" placeholder="+000 99 123 4567">
+<input type="text" name="WhatsApp" placeholder="+000 99 123 4567">
 
 <label>Correo electrónico:</label>
-<input type="email" id="correoInput" name="Correo" placeholder="ejemplo@correo.com">
+<input type="email" name="Correo" placeholder="ejemplo@correo.com">
 
 <label>Forma de pago:</label>
 <select id="metodoPago" name="Método de pago">
@@ -257,7 +257,7 @@ Precio:
 
 <div id="comprobanteBox" class="hidden">
 <label>Adjuntar comprobante:</label>
-<input type="file" id="comprobanteInput" name="Comprobante">
+<input type="file" name="Comprobante">
 </div>
 
 <div class="resumen hidden" id="resumenBox">
@@ -268,8 +268,9 @@ Precio:
 <p class="totalFinal" id="totalFinal"></p>
 </div>
 
+<button type="submit">Proceder con el envío</button>
 </div>
-
+</form>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -429,37 +430,7 @@ Escribe al WhatsApp +593 99 528 5372 para procesar el pago.`;
 }
 
 });
-document.getElementById("enviarBtn").addEventListener("click", function(e){
-e.preventDefault();
 
-const formData = new FormData();
-formData.append("Nombre", document.getElementById("nombreInput").value);
-formData.append("Tipo de cliente", document.getElementById("tipoClienteInput").value);
-formData.append("WhatsApp", document.getElementById("whatsappInput").value);
-formData.append("Correo", document.getElementById("correoInput").value);
-formData.append("País", document.getElementById("paisSelector").value);
-formData.append("Método de pago", document.getElementById("metodoPago").value);
-formData.append("Total", document.getElementById("totalFinal").textContent);
-
-const archivo = document.getElementById("comprobanteInput").files[0];
-if(archivo){
-formData.append("Comprobante", archivo);
-}
-
-fetch("https://formsubmit.co/ajax/axxell.klk@gmail.com",{
-method:"POST",
-headers:{'Accept':'application/json'},
-body:formData
-})
-.then(response => response.json())
-.then(data => {
-alert("Pedido enviado correctamente.");
-})
-.catch(error => {
-alert("Error al enviar el pedido.");
-});
-});
-  
 });
 </script>
 
