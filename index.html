@@ -444,7 +444,16 @@ if(this.value==="paypal"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
 Escribe al WhatsApp +593 99 528 5372 para procesar el pago.`;
 }
- 
+
+});
+<script>
+document.querySelector("form").addEventListener("submit", function() {
+ const formData = new FormData(this);
+fetch("https://hook.us2.make.com/6bin1s5jgv0njq2ntleakjlqh5xti9gr", {
+method: "POST",
+body: formData
+});
+
 });
 </script>
 
