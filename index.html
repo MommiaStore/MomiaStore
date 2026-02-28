@@ -211,6 +211,8 @@ font-size:16px;
 <div onclick="location.reload()" style="cursor:pointer;">Limpiar</div>
 <input type="hidden" name="_captcha" value="false">
  <input type="hidden" name="_next" value="https://mommiastore.github.io/MomiaStore/gracias.html">
+ <input type="hidden" name="Producto" id="productoHidden">
+<input type="hidden" name="Precio base USD" id="precioHidden">
 </div>
 
 <div id="productBox" class="product-box hidden">
@@ -301,6 +303,8 @@ if(producto && precio){
 document.getElementById("productBox").classList.remove("hidden");
 document.getElementById("resumenBox").classList.remove("hidden");
 document.getElementById("productoNombre").textContent = producto;
+document.getElementById("productoHidden").value = producto;
+document.getElementById("precioHidden").value = precio.toFixed(2) + " USD";
 document.getElementById("precioBaseTop").textContent = precio.toFixed(2);
 document.getElementById("monedaTop").textContent = moneda;
 if(imagen){
