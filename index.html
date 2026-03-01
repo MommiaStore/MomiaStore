@@ -437,31 +437,18 @@ Cédula: 1753616547`;
 if(this.value==="binance"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
 Correo: adonis.klk@icloud.com<br>
-ID Binance: 1021396902`;
+ID: 1021396902`;
 }
 
 if(this.value==="paypal"){
 datosPago.innerHTML=`<strong>Detalles del método seleccionado</strong><br>
 Escribe al WhatsApp +593 99 528 5372 para procesar el pago.`;
 }
+
 });
 
- document.querySelector("form").addEventListener("submit", function(e) {
-
- e.preventDefault();
-
- const form = this;
- const formData = new FormData(form);
-
- fetch("https://hook.us2.make.com/6bin1s5jgv0njq2ntleakjlqh5xti9gr", {
-  method: "POST",
-  body: formData
- })
- .then(() => {
-   form.submit();
- });
- 
- });
+});
 </script>
+
 </body>
 </html>
