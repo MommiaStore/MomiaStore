@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Panel Admin - Momia</title>
+<style>
+body { font-family: Arial; background:#111; color:white; padding:20px; }
+h1 { color:#00ffd5; }
+.card { background:#1e1e1e; padding:15px; margin-bottom:15px; border-radius:8px; }
+button { background:#00ffd5; border:none; padding:8px 12px; cursor:pointer; font-weight:bold; }
+input { padding:8px; margin-bottom:10px; width:200px; }
+.hidden { display:none; }
+</style>
+</head>
+<body>
+
+<h1>Panel Interno Momia Store</h1>
+
+<div id="login">
+<input type="password" id="password" placeholder="Contraseña">
+<br>
+<button onclick="login()">Entrar</button>
+</div>
+
+<div id="panel" class="hidden">
+<h2>Ventas Pendientes</h2>
+<div id="ventas"></div>
+</div>
+
+<script>
+
+const PASSWORD = "momia2026";
+
+function login(){
+  const pass = document.getElementById("password").value;
+  if(pass === PASSWORD){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("panel").classList.remove("hidden");
+    cargarVentas();
+  } else {
+    alert("Contraseña incorrecta");
+  }
+}
+
+function cargarVentas(){
+  document.getElementById("ventas").innerHTML = 
+  "<div class='card'>Ejemplo Venta TX-001<button onclick='confirmar()'>Confirmar</button></div>";
+}
+
+function confirmar(){
+  alert("Aquí luego conectaremos el webhook de confirmación");
+}
+
+</script>
+
+</body>
+</html>
